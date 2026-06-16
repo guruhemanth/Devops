@@ -1,0 +1,2640 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Snorkel TX :: User Summary </title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<link rel="stylesheet" type="text/css" href="otl_MFAstyle.css">
+	<link rel="stylesheet" type="text/css" href="table.css">
+	<link rel=stylesheet type="text/css" href="otlCertificate.css"> </link>
+	<link rel="shortcut icon" type="image/ico" href="images/ico.ico"> 
+	<!--<script src="Snorklet.js"></script-->
+	<script src="otl_MFAexternal.js"></script>
+	<script src="otl_Validation.js"></script>
+	<script src="table.js"></script>
+	<script src='Asn.js'></script>
+	<script src='otlCertificate.js'></script>
+	<script src='X509Ext.js'></script>
+	<script src='Utils.js'></script>								
+</head>
+<style>
+/********************** Add IP Popup Styling Starts **********************/
+.appFormTextLink 
+{
+    font-style: italic;
+    text-decoration: underline;
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+}
+#appPopupOverlay
+{
+	position:fixed;
+	top:0%;
+	left:0%;
+	width:100%;
+	height:100%;
+	background-color:rgba(0,0,0,0.5);
+	z-index:200;
+	display:none;
+}
+.appPopupContainer
+{
+	position:absolute;
+	top:15%;
+	left:28%;
+	width:45%;
+	height:auto;
+	background-color:white;
+	z-index:201;
+	border: solid 1px #67abc6;
+	box-shadow:2px 2px 8px #000;
+	display:none;
+	border-radius:8px;
+	animation:zoomIn 500ms;
+}
+.appPopupHeader
+{
+	width:100%;
+	height:12%;
+	font:normal 1.2em calibri;
+	line-height:40px;
+	background-image: -webkit-linear-gradient(top,#cbe8f6 0%,#94ceeb 100%);
+	background-image: -moz-linear-gradient(top,#cbe8f6 0%,#94ceeb 100%);
+	background-image: -ms-linear-gradient(top,#cbe8f6 0%,#94ceeb 100%);
+	background-image: -o-linear-gradient(top,#cbe8f6 0%,#94ceeb 100%);
+	background-image: linear-gradient(top,#cbe8f6 0%,#94ceeb 100%);
+	color:#002e5c;
+	text-align:center;
+	border-radius:8px 8px 0px 0px;
+}
+.appPopupClose
+{
+	float:right;
+	margin-top:5px;
+	margin-right:8px;
+	font:normal 1.5em calibri;
+	width:25px;
+	height:25px;
+	text-align:center;
+	line-height:20px;
+	cursor:pointer;
+	color:#002e5c;
+	border-radius:50%;
+}
+.appPopupBody
+{
+	width:auto;
+	margin:3% auto;
+	height:88%;
+	border-radius:0px 0px 8px 8px;
+}
+.appPopupButton
+{
+	position:relative;
+	margin:5% auto;
+	font:bold 1em calibri;
+	width:80px;
+	height:35px;
+	line-height:35px;
+	color:white;
+	text-align:center;
+	border-radius:5px;
+	cursor:pointer;
+	background-image: -webkit-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -moz-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -ms-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -o-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: linear-gradient(to bottom,#ffffff 0%,#a9d3e6 100%);
+    color: black;
+	border : solid 1px #a9d3e6;
+}
+.appAddHolder
+{`	
+	width:90%;
+	margin:1% auto;
+	border-radius:5px;
+	font:normal 1em calibri;
+	background-color:#014753;
+	color:white;
+	text-align:center;
+	min-height:30px;
+	line-height:30px;
+	position:relative;
+}
+.appAddDelete{float:right;margin-right:8px;color:#FDC84A;cursor:pointer;font-size:1.45em;}
+#addedClientIp 
+{
+    border: solid 2px #d2d2d2;
+    width: 90%;
+    margin: 2% auto;
+    height: 165px;
+    overflow: auto;
+}
+#clientIpPopupDiv .formRow>div:last-child 
+{
+	float: right;
+    margin-right: 20px;
+    display: inline-block;
+	background-image: -webkit-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -moz-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -ms-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -o-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: linear-gradient(to bottom,#ffffff 0%,#a9d3e6 100%);
+    color: black;
+    width: 60px;
+    height: 30px;
+    text-align: center;
+    font: bold 1em calibri;
+    cursor: pointer;
+    line-height: 30px;
+    border-radius: 5px;
+	border : solid 1px #a9d3e6;
+}
+.appAddHolder{width:90%;margin:1% auto;border-radius:5px;font:normal 1em calibri;background-color:#e9f5fb;color:black;text-align:center;min-height:30px;line-height:30px;position:relative;}
+#appBasicPane > .formRow
+{
+	margin: 1.5% auto;
+}
+#trustedIpList
+{
+	display : inline-block;
+	float : right;
+	vertical-align : top;
+    margin: 1%;
+    width: 100px;
+    height: 27px;
+    text-align: center;
+    line-height: 2;
+    cursor: pointer;
+	background-image: -webkit-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -moz-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -ms-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -o-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: linear-gradient(to bottom,#ffffff 0%,#a9d3e6 100%);
+	border : solid 1px #a9d3e6;
+}
+
+/********************** Add IP Popup Styling Ends **********************/
+/******************* Show POPUP Starts ***********************/
+#popupMessageArea{
+	position : absolute;
+	top : 35%;
+    left: 40%;
+	color:#000;
+	font:normal 0.95em Helvetica;
+	min-height:140px;
+	height:auto;
+    width: 30%;
+    line-height: 150px;
+	text-align : center;
+	-webkit-box-shadow:2px 2px 5px #000000;
+	-moz-box-shadow:2px 2px 5px #000000;
+	-webkit-backface-visibility: visible !important;
+	-moz--backface-visibility: visible !important;
+	-ms-backface-visibility: visible !important;
+	-o-backface-visibility: visible !important;
+	backface-visibility: visible !important;
+	-webkit-animation:flipInX 0.5s;
+	-moz-animation:flipInX 0.5s;
+	-ms-animation:flipInX 0.5s;
+	animation:flipInX 0.5s;
+	padding-bottom:10px;
+	border-radius:8px;
+	border:solid 1px #a9d3e6;
+	background:#a9d3e6;
+	background-image: -webkit-linear-gradient(left,#cbe8f6 0%,#94ceeb 100%);
+	background-image: -moz-linear-gradient(left,#cbe8f6 0%,#94ceeb 100%);
+	background-image: -ms-linear-gradient(left,#cbe8f6 0%,#94ceeb 100%);
+	background-image: -o-linear-gradient(left,#cbe8f6 0%,#94ceeb 100%);
+	background-image: linear-gradient(to right,#cbe8f6 0%,#94ceeb 100%);
+	color:white;
+	z-index:501;
+}
+.closePopup
+{
+	position:absolute;
+	top:2%;
+	right:2%;
+	background:#cbe8f6;
+	height:25px;
+	width:25px;
+	border-radius:100%;
+	text-align:center;
+	cursor:pointer;
+	transition:transform 0.5s;
+	font:normal 0.7em Helvetica;
+	color:black;
+	line-height:25px;
+	transition:transform 0.5s;
+}
+.closePopup:hover{transform:rotate(180deg)}
+.popupText
+{
+	position:relative;
+	left:5%;
+	width:90%;
+	top:50px;
+	color:black;
+	line-height:1.2;
+	min-height:30px;
+	font:normal 1.1em Helvetica;
+}
+.authPopupText
+{
+	position:relative;
+	left:5%;
+	width:90%;
+	top:10px;
+	color:black;
+	line-height:1.2;
+	min-height:30px;
+	font:normal 1.1em Helvetica;
+}
+.formRow
+{
+	width:95%;
+	margin:3% auto;
+	height:30px;
+}
+.thirdFactorformRow
+{
+	width:100%;
+	margin:4% auto;
+	height:30px;
+}
+.formInput
+{
+	outline: 0;
+    border: 0;
+    height: 100%;
+    width: 26%;
+    padding-left: 1%;
+    box-shadow: 0px 0px 2px #a2a2a2;
+    border-radius: 5px;
+}
+.formLabel, .formInput, .formValue
+{
+	display: inline-block;
+    width: 50%;
+    height: 28px;
+    font: normal 1em/1.8 calibri;
+    padding-left: 5px;
+	width: 37%;
+    text-indent: 5px;
+    color: #111;
+    vertical-align: top;
+    text-shadow: 0 0 3px #fff;
+    font-weight: 550;
+    font-size: 13px;
+    font-style: normal;
+    font-family: "freight-sans-pro",sans-serif;
+}
+.formInput, .formValue
+{
+	width : 55%;
+}
+.addTextBtn 
+{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	text-align:center;
+	font: bold 1em helvetica;
+	line-height: 21px;
+	//border: solid 1px #133f79;
+	color: #133f79;
+	cursor: pointer;
+	margin: 1%;
+	background:#e4f3f7;
+}
+#existingAuthFactor
+{
+	font-size : 14px;
+	text-decoration : underline;
+	color : blue;
+	cursor : pointer;
+}
+.formBtn
+{
+	position:relative;
+	margin:5% auto;
+	font:bold 1em calibri;
+	width:80px;
+	height:35px;
+	line-height:35px;
+	//background-color:#f0b70a;
+	color:white;
+	text-align:center;
+	border-radius:5px;
+	cursor:pointer;
+	background-image: -webkit-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -moz-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -ms-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -o-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: linear-gradient(to bottom,#ffffff 0%,#a9d3e6 100%);
+    color: black;
+	border : solid 1px #a9d3e6;
+}
+.subHeader
+{
+	display : inline-block;
+	font:bold 0.95em calibri;
+	width:auto;
+	margin:3% auto;
+}
+.dullScreenStyle
+{
+	position:fixed;
+	top:0px;
+	left:0px;
+	width:100%;
+	height:100%;
+	background:#000000;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	-moz-opacity: 0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+}
+/*************************************************** Show popup ends ****************************************************/
+/*************************************************** Third Factor starts ****************************************************/
+#thirdFactorDiv
+{
+	display : none;
+	float : right;
+	vertical-align : top;
+	margin-right: 8%;
+    width: 90px;
+    height: 25px;
+    text-align: center;
+	font:normal 14px calibri;
+    line-height: 2;
+    cursor: pointer;
+	background:#a9d3e6;
+	background-image: -webkit-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -moz-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -ms-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -o-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: linear-gradient(to bottom,#ffffff 0%,#a9d3e6 100%);
+	border : solid 1px #a9d3e6;
+}
+.thirdFactorInput
+{
+	outline: 0;
+    border: 0;
+    height: 25px;
+    width: 45%;
+    padding-left: 1%;
+	border:solid 1px #a2a2a2;
+    box-shadow: 0px 0px 2px #a2a2a2;
+    border-radius: 5px;
+}
+input[type=file].thirdFactorInput{border:none;}
+.thirdFactorLabel
+{
+	display: inline-block;
+    width: 120px;;
+    height: 28px;
+    font: normal 1em/1.8 calibri;
+    padding-left: 5px;
+    text-indent: 20px;
+    color: #666666;
+    vertical-align: top;
+    text-shadow: 0 0 3px #fff;
+    font-weight: 550;
+    font-size: 13px;
+    font-style: normal;
+    font-family: "freight-sans-pro",sans-serif;
+}
+.thirdFactorButton
+{
+	display:inline-block;
+	margin:2%  43%;
+	padding:0px 20px;
+	font:bold 1em/1.8 calibri;
+	width:auto;
+	height:30px;
+	color:white;
+	//margin-left:32%;
+	text-align:center;
+	border-radius:5px;
+	cursor:pointer;
+	background:#a9d3e6;
+	background-image: -webkit-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -moz-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -ms-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: -o-linear-gradient(top,#ffffff 0%,#a9d3e6 100%);
+	background-image: linear-gradient(to bottom,#ffffff 0%,#a9d3e6 100%);
+    color: black;
+	border : solid 1px #a9d3e6;
+}
+.thirdFactorFormValue
+{
+	display:inline-block;
+	vertical-align:top;
+	width:139px;
+	height:auto;
+}
+/*************************************************** Third Factor ends ******************************************************/
+</style>
+<body onload="Initialise();">
+	<div id="otlLogo"></div>
+	<div id="otlSubMenu"></div>
+	<div id="otlBottom" ></div>
+	<div id="otlError"></div>
+	<table width="99%" height="100%" border="0" cellpadding="0" cellspacing="0">
+		<tr height="95%">
+			<td id="otlLeft" width="237">&nbsp;</td>
+			<td valign="top">
+				<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" >
+					<tr><td id="otlTop"></td><td class="otlTopEnd">&nbsp;</td></tr>
+					<tr>
+						<td id="otlContent" valign=top colspan=2 id="otlContentTable" >
+							<table width=100% border="0" id="otlMainMenuTab1e" style="WORD-BREAK:BREAK-ALL;">
+								<tr ><td class="otlHeadLabel">User > User Addition</td></tr>
+								<tr ><td class="otlRowPadding"><div id='thirdFactorDiv' onclick='showThirdFactorPopup();'>Third Factor</div></td></tr>
+								<tr height=auto>
+									<td align=center valign=top>
+										<input type="hidden" name="otlDate" id="otlDate"/>
+										<input type="hidden" id="otlPageName"/>
+										<table width="100%" border="0">
+											<tr>
+												<td id="otlAdimnTableAddr" colspan=2>
+													<form name="AddUser" id="AddUser">
+														<input type="hidden" name="otldata" />
+														<input type="hidden" name="otlsignature"/>
+														<input type="hidden" name="otlfilesignature" />
+														<input type="hidden" name="otlfile1signature" />
+														<input type="hidden" name="otlDate" id="otlDate"/>
+														<input type="hidden" name="otlPageName" id="otlPageName"/>
+														<input type="hidden" id="otlparamcount" >
+														<input type="hidden" id="FirstGroupId"/>
+														<input type="hidden" id="otlGrouphash" name="otlGrouphash"/>
+														<input type="hidden" id="otlGroupsLen" name="otlGroupsLen" />
+														<input type="hidden" id="otlAppGroups"/>
+														<input type="hidden" id="application" name="application"/>
+														<input type="hidden" id="mobileotp" name="mobileotp" />
+														<table width="85%" align="center" border="0" cellspacing="0" cellpadding="0">
+															<tr>
+																<td id="tab1">
+																	<table width="100%" bgcolor="#ebf4f9" border="0">
+																		<tr><td width="44%" align="center" class="otlTDFieldLabel" id="otlAppLink" colspan="2">  </td></tr>
+																		<tr><td> &nbsp;</td></tr>
+																		<tr>
+																			<td width="44%" align="right" class="otlTDFieldLabel"> Application name </td>
+																			<td class="otlTDField">
+																				<select id="appname" class="text" onchange='populateAppGroups(this.value);' style='width:28%;' data-mandatory='Application name'>
+																					<option value="">[ SELECT ]</option>
+																				</select>
+																			</td>
+																		</tr>
+																		<tr>
+																			<td width="44%" align="right" class="otlTDFieldLabel"> Friendly name </td>
+																			<td class="otlTDField"><input class="text" id="username" name="username" type="text" maxlength="64" data-mandatory="friendly name"> </td>
+																		</tr>
+																		<tr>
+																			<td width="44%" align="right" class="otlTDFieldLabel"> Email ID </td>
+																			<td class="otlTDField"><input class="text" id="emailid" name="emailid" type="text"> </td>
+																		</tr>
+																		<tr>
+																			<td class="otlTDFieldLabel" width="44%" align="right">Mobile Number</td>
+																			<td align='left'><input type="text"  class="text" id="mobileno" maxlength="15"></td>
+																		</tr>
+																		<tr>
+																			<td width="44%" align="right" class="otlTDFieldLabel" id='paramLabel1'>User ID 1</td>
+																			<td class="otlTDField"><input class="text" id="userid1" name="userid1" onblur="this.value=this.value.trim()" type="text" data-mandatory='user identifier 1' maxLength="32" /> </td>
+																		</tr>
+																		<tr id="param2">
+																			<td width="44%" align="right" class="otlTDFieldLabel" id="paramLabel2">User ID 2</td>
+																			<td class="otlTDField" id='paramValue2'><input class="text" id="userid2" name="userid2" type="text" data-mandatory='user identifier 2' maxlength='32' /> </td>
+																		</tr>
+																		<tr id='add_authType'>
+																			<td class="otlTDFieldLabel" height="20" width="44%" align="center" id='authfactorRow'>Authentication Factor</td>
+																			<!-- <td class="otlTDField" height="20" align ="center" id='authfactorRow'> -->
+																				<td id='cert' style='display:none;'><input type="radio" id="certUser" onchange="authChange();" name="authfactor" value=3/> Certificate</td>
+																				<td id='sotp' style='display:none;'><input type="radio" id="smsotp" name="authfactor" value=0 onchange="authChange();" />SMS</td>
+																				<!-- <span id="reg">SMS</span> -->
+																				<td id='motp' style='display:none;'><input type="radio" id="mobotp" name="authfactor" value=1 onchange="authChange();" />Mobile OTP</td>
+																				<td id='dotp' style='display:none;'><input type="radio" name="authfactor" onchange="authChange();" id="deviceotp" value=2 />Device OTP</td>
+																				<!-- <td id='xorkee' style='display:none;'><input type="radio" name="authfactor" onchange="authChange();" id="xorkeeFactor" value=2 /><span>xorkee</span></td> -->
+																			<!-- </td> -->
+																		</tr>
+																		<tr  id='existingAuthRow' style='display:none;'>
+																			<td class="otlTDFieldLabel" height="20" width="44%" align="center">Existing Authentication Factor</td><td id='existingAuthFactorRow'></td>
+																		</tr>
+																		<tr id="certificateDiv" style="display:none;">
+																			<td width="44%" height="20" align="center" class="otlTDFieldLabel" >Certificate</td>
+																			<td height="20" align="center" class="otlTDField">
+																				<input name="certificate" class="text" id="certificate" type="file" style='width:50%;'/>&nbsp;&nbsp;&nbsp;<img src="images/cert.jpg" height=20 width=25 id="viewCertBtn" style="display:none;cursor:pointer;" />
+																			</td> 
+																		</tr>
+																		<!-- <tr id="xorkeehandleDiv" style="display:none;"> -->
+																			<!-- <td width="44%" height="20" align="center" class="otlTDFieldLabel" >xorkee Handle</td> -->
+																			<!-- <td height="20" align="center" class="otlTDField"> -->
+																				<!-- <input name="xorkeehandle" class="text" id="xorkeehandle" type="text" style='width:28%;' />&nbsp;&nbsp;&nbsp;@xorkee.com -->
+																			<!-- </td>  -->
+																		<!-- </tr> -->
+																		<!-- <tr id="xorkeeCertDiv" style="display:none;"> -->
+																			<!-- <td width="44%" height="20" align="center" class="otlTDFieldLabel" >Upload Enterprise Certificate for xorkee</td> -->
+																			<!-- <td height="20" align="center" class="otlTDField"> -->
+																				<!-- <input name="certificate" class="text" id="xorkeecert" type="file" style='width:28%;'/>&nbsp;&nbsp;&nbsp;<img src="images/cert.jpg" height=20 width=25 id="viewxorkeeCertBtn" style="display:none;cursor:pointer;" /> -->
+																			<!-- </td>   -->
+																		<!-- </tr> -->
+																		<tr><td width="44%" align="center" class="otlTDFieldLabel" id="otlAppLink" colspan="2"></td></tr>
+																		<tr id="serialNoRow" style="display:none;">
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Serial Number</td>
+																			<td class="otlTDField" height="20" align="center"><input type="text" id="tokenserialnum" name="tokenserialnum" class="text" /></td>
+																		</tr>
+																		<tr id="vendorRow" style="display:none;">
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Vendor </td>
+																			<td height="20" class="otlTDField" align="center" > 
+																				<select id="tokenvendor"  name="tokenvendor" class="select">
+																					<option value="ETOKEN" >e-Token </option>
+																					<option value="ATHENA">Athena</option>
+																					<option value="VASCO">Vasco</option >
+																				</select>
+																			</td>
+																		</tr>
+																		<tr id='loginAuthType' style="display:none;">
+																			<td class="otlTDFieldLabel" height="20" width="44%" align="center">Login Authentication Type</td>
+																			<td class="otlTDField" height="20" align ="center">
+																			<input type="radio" id="plainOTP" name="loginAuthType" checked />Plain OTP
+																			<input type="radio" id="challengeOTP" name="loginAuthType"/>Challenge OTP
+																			<input type="radio" id="e-signature" name="loginAuthType"/> e-Signature
+																			</td>
+																		</tr>
+																		<tr id='transAuthType' style="display:none;">
+																			<td class="otlTDFieldLabel" height="20" width="44%" align="center">Transaction Authentication Type</td>
+																			<td class="otlTDField" height="20" align ="center">
+																			<input type="radio" id="trans_plainOTP" name="transAuthType" checked />Plain OTP
+																			<input type="radio" id="trans_challengeOTP" name="transAuthType" />Challenge OTP      
+																			<input type="radio" id="trans_e-signature" name="transAuthType"/> e-Signature
+																			</td>
+																		</tr>
+																		<tr>
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Attribute1</td>
+																			<td class="otlTDField" height="20" align="center"><input type="text" id="attribute1" name="attribute1" class="text" /></td>
+																		</tr>
+																		<tr>
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Attribute2</td>
+																			<td class="otlTDField" height="20" align="center"><input type="text" id="attribute2" name="attribute2" class="text" /></td>
+																		</tr>
+																		<tr>
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Attribute3</td>
+																			<td class="otlTDField" height="20" align="center"><input type="text" id="attribute3" name="attribute3" class="text" /></td>
+																		</tr>
+																		<tr>
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Attribute4</td>
+																			<td class="otlTDField" height="20" align="center"><input type="file" id="attribute4" name="attribute4" class="text" style='width:28%;' /></td>
+																		</tr>
+																		<tr>
+																			<td width="44%" height="20" class="otlTDFieldLabel" align="center" >Enable Trusted Ip</td>
+																			<td class="otlTDField" height="20" align="center">
+																				<input type="radio" id="trustedIp_enable" name="trustedIp"  onchange='trustedIpOnChange();'/>Yes
+																				<input type="radio" id="trustedIp_disable" name="trustedIp" onchange='trustedIpOnChange();' checked />No
+																			</td>
+																		</tr>
+																		<tr id="trustedIpRow">
+																			<td width="44%" align="right" class="otlTDFieldLabel" >Trusted Ip</td>
+																			<td class="otlTDField" height="20" align="center"><span class='appFormTextLink' onclick='addClientIpPopup();'>Add/View</span></td>
+																		</tr>
+																		<!-- <tr id="trustedIpRow" style='display:none;'> -->
+																		<tr><td> &nbsp;</td></tr>
+																		<tr><td class="otlRowPadding"></td></tr>
+																	</table>
+																</td>
+															</tr>
+															<tr><td class="otlRowPadding"></td></tr>
+														</table>
+													</form>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<table width="85%" align="center" border="0" cellspacing="0" cellpadding="0">
+														<tr>
+															<td  colspan=1 class="otlMenu" align="left">
+																<span id="otlShowG" class='text' onclick="otl_showHide('otlGroup','otlShowG','Groups')"> <img src="images/minus.jpg"/><b> Groups </b></span>
+															</td>
+															<td  class="otlMenu" style='font-family:calibri;' align="right"><b>Select All</b><input type="checkbox" id="otlGrpAll" onclick="otl_CheckGAll(this)" />&nbsp;&nbsp;&nbsp;&nbsp; </td>
+														</tr>
+														<tr>
+															<td  align="right" colspan=2 class="otlTDField" id="otlGroup" width=100%>
+																<span id="otlGroups" class="otlNormalText" style="display:inline"></span> 
+															</td>
+														</tr>														
+													</table>
+													
+												</td>
+											</tr>
+											<tr><td class="otlRowPadding"></td></tr>
+											<tr align="center">
+												<td colspan="2"> <input class="button" id="otlSubmit" onclick="addUser()" type="button" value="Submit">&nbsp;&nbsp;<input class="button" id="otlReset" type="button" value="Reset" onclick='resetUser();'><input class="button" id="modify" type="submit" value="Modify" onclick='modifyUser();' style='display:none;'></td>
+											</tr>
+											<tr><td id="otlAdminFooter"></td></tr>
+											<tr><td>&nbsp;</td></tr>
+										</table>
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+	<div id='clientIpPopupDiv' class='appPopupContainer' style='width:40%;left:30%;text-align:center;'>
+		<div class='appPopupHeader'>Client IP<span class='appPopupClose'>&#x00D7;</span></div>
+		<div class='appPopupBody' style='width:80%;'>
+			<div class='formRow' style='width:100%;'>
+				<span class='formLabel' style='width:35%;'>IP Address</span>
+				<input type='text' class='formInput' placeholder='IP Address' name="clientIpTxtBox" data-mandatory="Ip Address" data-fieldType="ipOrDomain" style='width:40%;' id='clientIpTxtBox'/>
+				<div onclick="addClientIpClick();" id='apiClientIpAddBtn'>ADD</div>
+			</div>
+			<span class='formLabel' style='font-style:normal;margin-top:2%;font:bold 1em calibri;height:auto;'>Added Clients</span>
+			<div id='addedClientIp'></div>
+			<div class='appPopupButton' onclick='saveClientIp();' id='apiClientIpSaveBtn' style='display:inline-block;margin:1% 4%;vertical-align:top;' >SAVE</div>
+			<div class='appPopupButton' id='clearIp' style='display:inline-block;margin:1% 4%;vertical-align:top;' >Clear All</div>	
+		</div>
+	</div>
+	<div id='appPopupOverlay' style='display:none;'></div>
+	<div id='thirdFactorPopupDiv' class='appPopupContainer' style='margin:3% 3%;display:none;min-width:450px;width:auto;max-width:700px;'>
+		<div class='appPopupHeader'>Third Factor Authentication<span class='appPopupClose'>&#x00D7;</span></div>
+		<div class='appPopupBody' style="width:100%;">
+			<form id='thirdFactorFormDiv' style='display:none;' target='thirdFactorFrame' name="thirdFactorDiv"  enctype="multipart/form-data" method="POST" >
+				<div class='thirdFactorformRow'>
+					<span class='thirdFactorLabel'>Username</span>
+					<input type='text' class='thirdFactorInput' placeholder='Username' readonly disabled id='thirdFactorUsername'/>
+				</div>
+				<div class='thirdFactorformRow' id="thirdFactorLogin">
+					
+				</div>
+				<div class='thirdFactorformRow' id="enableForLogin" style="display:none">
+					<span class='thirdFactorLabel'>Enable For</span>
+					<input type='radio' name='enableForLogin' id='enableForLogin_twoFactor' checked />
+					<label for='enableForLogin_twoFactor'>Two Factor</label>
+					<div id="loginThreeFactorRadioBtn" style="vertical-align: top; display: inline-block;" >
+						<input type='radio' name='enableForLogin' id='enableForLogin_threeFactor'  />
+						<label for='enableForLogin_threeFactor'>Three Factor</label>
+					</div>
+				</div>
+				<div class='thirdFactorformRow' id="thirdFactorTransaction">
+				</div>
+				<div class='thirdFactorformRow' id="enableForTransaction" style="display:none">
+					<span class='thirdFactorLabel'>Enable For</span>
+					<input type='radio' name='enableForTransaction' id='enableForTransaction_no'   />
+					<label for='enableForTransaction_no'>No</label>
+					<input type='radio' name='enableForTransaction' id='enableForTransaction_two' checked  />
+					<label for='enableForTransaction_two'>Two</label>
+					<div id="transactionThreeFactorRadioBtn" style="vertical-align: top; display: inline-block;" >
+						<input type='radio' name='enableForTransaction' id='enableForTransaction_three'  />
+						<label for='enableForTransaction_three'>Three</label>
+					</div>
+				</div>
+				<div class='thirdFactorButton'   id='thirdFactorSubmitBtn' onclick='thirdFactorSubmit()' >Submit</div>
+			</form>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+var userid1 = '';
+var userid2 ='';
+var application='';
+var otlFirstGrpID='';
+var otlGblGroups='';
+var authfactor = [];
+var userDetails = {};
+var isChecked=0;
+var thirdFactorEnableFlag="Disabled";
+var otlLoadImage = new snklotlLoading();
+var addClientIpObj = new addClientIp();
+
+function otl_showHide(otlCntId,otlImgId,otlHeadStr)
+{
+        if($(otlCntId).style.display=="none")
+        {
+                $(otlCntId).style.display="inline";
+                $(otlImgId).innerHTML="&nbsp;<img src='images/minus.jpg'/><b> "+otlHeadStr+" </b>"
+        }
+        else
+        {
+                $(otlCntId).style.display="none";
+                $(otlImgId).innerHTML="&nbsp;<img src='images/plus.jpg'/><b> "+otlHeadStr+" </b>"
+        }
+}
+function resetUser()
+{
+	$('AddUser').reset();
+	$('appname').selectedIndex='1';
+	$('otlGrpAll').checked=false;
+	otl_CheckGAll($('otlGrpAll'));
+}
+function Initialise()
+{
+	otl_FormSubMenu('User');
+	getAppList(function()
+	{
+		populateAppGroups();
+		getappparams();
+		populateUserDetails();
+				 
+		getAppAuthFactors();
+		addClientIpObj = new addClientIp();
+		trustedIpOnChange();
+	});
+}
+function getappparams()
+{
+	var reqObj = {};
+	reqObj.request = 'getappparams';
+	reqObj.application = $('appname').value;
+	ajax("post", "/", JSON.stringify(reqObj), function(resp)
+	{
+		if(resp.success)
+		{
+			if(resp.param1 != null) 
+				$("paramLabel1").innerHTML = resp.param1;
+			if(resp.param2 != null)
+			{
+				showElems(['paramLabel2','paramValue2'],'table-cell');
+				$("paramLabel2").innerHTML = resp.param2;
+			}
+			else
+			{
+				hideElems(['paramLabel2','paramValue2']);
+				$("paramLabel2").innerHTML = '';
+			}
+		}
+	});
+}
+function getAppAuthFactors()
+{
+	var reqObj = {};
+	reqObj.request = 'getappauthfactors';
+	reqObj.application = $('appname').value;
+	ajax("post", "/", JSON.stringify(reqObj), function(resp)
+	{
+		if(resp.success)
+		{
+			if(resp.hasOwnProperty('authfactors') && resp.authfactors.length)
+			{
+				let authFactorArr = ['cert','sotp','motp','dotp'];
+				authFactorArr.forEach(function(elem)
+				{
+					$(elem).style.display = 'none';
+				});
+				for(var i=0;i<resp.authfactors.length;i++)
+				{
+					if($(resp.authfactors[i])) $(resp.authfactors[i]).style.display = 'inline';
+				}
+			}
+		}
+	});
+}
+function getAppList(cb)
+{
+	otlLoadImage.show();
+	sendXmlRequest(JSON.stringify({"request":"getapplist"}), function(resp)
+	{
+		otlLoadImage.hide();
+		if(resp.success)
+		{
+			for(var i=0;i<resp.data.length;i++)
+			{
+				$("appname").options[$("appname").options.length] = new Option(resp.data[i], resp.data[i]);
+				if(i == 0) $("appname").value = resp.data[i];
+			}
+		}
+		else showPopup("Failed to load applications");
+		if(cb) cb();
+	});
+}
+function populateAppGroups(appName)
+{
+	appName = appName || $('appname').value; 
+	otl_resp=otl_RequestThroughXmlhttp("/getmappedGroupList?application="+appName,"Otl_FormGroupDetails(otlResponse)");
+	$(otlGblGroups[1]).checked=true;
+	getappparams();
+	getAppAuthFactors();
+}
+function populateUserDetails()
+{
+	var queryString = window.location.href.split("?")[1];
+	queryString = decodeURI(queryString);
+	if(queryString != 'undefined')
+	{
+		$('username').disabled = true;
+		$('appname').disabled = true;
+		$('add_authType').style.display = 'none';
+		$('existingAuthRow').style.display = 'table-row';
+		$('modify').style.display = "inline-block";
+		$('modify').style.marginLeft = "2%";
+		$('otlSubmit').style.display = "none";
+		queryString = queryString.split("&");
+		var reqObj = {};
+		for(var i=0;i<queryString.length;i++)
+		{
+			if(queryString[i].indexOf("userid1=")!=-1)
+			{
+				$('userid1').disabled = true;
+				reqObj.userid1 = queryString[i].split("userid1=")[1];
+				userid1 = queryString[i].split("userid1=")[1];
+			}
+			if(queryString[i].indexOf("userid2=")!=-1)
+			{
+				if(queryString[i].split("userid2=")[1] != null && queryString[i].split("userid2=")[1] != 'null')
+				{
+					$('param2').style.display = 'table-row';
+					$('userid2').disabled = true;
+					reqObj.userid2 = queryString[i].split("userid2=")[1];
+					userid2 = queryString[i].split("userid2=")[1];
+				}
+				else
+				{
+					$('param2').style.display = 'none';
+				}
+				
+			}
+			if(queryString[i].indexOf("application=")!=-1)
+			{
+				reqObj.application = queryString[i].split("application=")[1];
+				application = queryString[i].split("application=")[1];
+				$('appname').value = application;
+			}
+		}
+		reqObj.request = "getuserinfo";
+		sendXmlRequest(JSON.stringify(reqObj), function(resp)
+		{
+			if(resp.success)
+			{
+				delete resp.response;
+				delete resp.success;
+				userDetails = resp;
+				if(userDetails.authfactors.length >= 1)
+					showElems(['thirdFactorDiv'],'inline-block');
+				<!-- $('userid1').value = userid1.split(" ").join(""); -->
+				<!-- $('userid2').value = userid2.split(" ").join(""); -->
+				$('userid1').value = userid1;
+				$('userid2').value = userid2;
+				$('appname').value = application;
+				$('existingAuthFactorRow').innerHTML = '';
+				if(resp.hasOwnProperty('authfactors'))
+				{
+					for(var i=0;i<resp.authfactors.length;i++)
+					{
+						var tmp = '<span class="text" id="existingAuthFactor" onclick="displayAuthInfo();">'+resp.authfactors[i]+'</span>&nbsp;&nbsp;';
+						$('existingAuthFactorRow').innerHTML += tmp;
+					}
+					if(!resp.authfactors.length && resp.hasOwnProperty('xorkee') && resp.xorkee == true)
+					{
+						var tmp = '<span class="text" id="existingAuthFactor" onclick="displayAuthInfo();">xorkee</span>&nbsp;&nbsp;';
+						$('existingAuthFactorRow').innerHTML = tmp;
+					}
+					else if(!resp.authfactors.length)
+					{
+						var tmp = '<span>No authentication factors are present</span>&nbsp;<span class="text" id="existingAuthFactor" onclick="displayAuthInfo(true);">Add new</span>&nbsp;&nbsp;';
+						$('existingAuthFactorRow').innerHTML += tmp;
+					}
+				}
+				else
+				{
+					if(!resp.authfactors.length && resp.hasOwnProperty('xorkee') && resp.xorkee == true)
+					{
+						var tmp = '<span class="text" id="existingAuthFactor" onclick="displayAuthInfo();">xorkee</span>&nbsp;&nbsp;';
+						$('existingAuthFactorRow').innerHTML = tmp ;
+					}
+					else
+					{
+						var tmp = '<span>No authentication factors are present</span>&nbsp;<span class="text" id="existingAuthFactor" onclick="displayAuthInfo(true);">Add new</span>&nbsp;&nbsp;';
+						$('existingAuthFactorRow').innerHTML += tmp;
+					}
+				}
+				authfactor = resp.authfactors;
+				if(authfactor.indexOf('Certificate') != -1){
+					$('certificateDiv').style.display = 'table-row';
+					$("viewCertBtn").style.display = "inline-block";
+					$("viewCertBtn").onclick = function(){
+						viewCertificate(resp.certificate,userid1,userid2);
+					}
+				}
+				if(authfactor.indexOf('xorkee') != -1){
+					$('xorkeeCertDiv').style.display = 'table-row';
+					$("viewxorkeeCertBtn").style.display = "inline-block";
+					$("viewxorkeeCertBtn").onclick = function(){
+						<!-- otlViewCertificate(resp.xorkeeCert); -->
+						otlViewCertificate(resp.xorkeeCert, true, resp.xorkeeCertUrl);
+					}
+				}
+				if(resp.hasOwnProperty('deviceotp') && (resp.hasOwnProperty('otplogintype')))
+				{
+					$('loginAuthType').style.display = 'block';
+					for(var i=0;i<resp.otplogintype.length;i++)
+					{
+						resp.otplogintype[i].checked = true;
+					}
+				}
+				if(resp.hasOwnProperty('deviceotp') && resp.hasOwnProperty('otptranstype'))
+				{
+					$('transAuthType').style.display = 'block';
+					for(var i=0;i<resp.otptranstype.length;i++)
+					{
+						resp.otptranstype[i].checked = true;
+					}
+				}
+				if(resp.hasOwnProperty('trustedipflag') && resp.trustedipflag)
+				{
+					$('trustedIp_enable').checked = true;
+					trustedIpOnChange();
+				}
+				else $('trustedIp_enable').checked = false;
+				addClientIpObj = new addClientIp();
+				if(resp.hasOwnProperty('trustediplist'))
+				{
+					for(var k=0;k<resp.trustediplist.length;k++) 
+						addClientIpObj('create',resp.trustediplist[k]);
+				}
+				for(var key in resp)
+				{
+					if(key == 'groupinfo')
+					{
+						if(typeof resp.groupinfo == 'object')
+						{
+							for(var i=0;i<resp.groupinfo.length;i++)
+							{
+								var selectedCount = 0;
+								if($(resp.groupinfo[i]))
+									$(resp.groupinfo[i]).checked = true;
+								selectedCount++;
+							}
+						}
+					}
+					else if(key != 'response' && key != 'success' && key != 'groupinfo' && key != 'authfactors')
+					{
+						if(key == 'certificate') 
+						{
+							$('certUser').checked = true;
+							if($(resp.groupinfo[i]))
+									$(resp.groupinfo[i]).checked = true;
+								selectedCount++;
+						}
+						else if(key == 'tokenserialnum')
+						{
+							$('deviceotp').checked = true;
+							$('tokenserialnum').style.display = 'inline';
+						}
+					  else if($(key)) 
+						$(key).value = ifUndefined(resp[key]);
+					}
+				}
+			}
+			else showPopup(resp.errorString);
+		});
+	}
+}
+function viewCertificate(certid,param1,param2)
+{
+	ajax("POST", "user.htm", JSON.stringify({"request":"viewusercert", "certificate": certid,"userid1":param1,"userid2":param2}), function(resp)
+	{
+		if(resp.success)
+		{
+			otlViewCertificate(resp.certificate, true, resp.certurl);
+		}
+		else showPopup(resp.errorString);
+	});
+}
+addClientIpObj = new addClientIp();
+function addUser()
+{
+	var otlValidateArr=new Array([$('userid1'),1]);
+	var otlValidationErrNote=new Array("Parameter Verifier")
+
+   	//if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+		//return false;
+	if($('username').value == '')
+	{
+		$('username').scrollIntoView();
+		showError({'field':$('username'),'text':'Please enter the username.'});
+		return false;
+	}
+	if($('emailid').value == '')
+	{
+		$('emailid').scrollIntoView();
+		showError({'field':$('emailid'),'text':'Please enter the Email-ID.'});
+		return false;
+	}
+	if($('mobileno').value == '')
+	{
+		$('mobileno').scrollIntoView();
+		showError({'field':$('mobileno'),'text':'Please enter the mobile number'});
+		return false;
+	}
+	if($('userid1').value == '')
+	{
+		$('userid1').scrollIntoView();
+		showError({'field':$('userid1'),'text':'Please enter the param1'});
+		return false;
+	}
+	<!-- if($('userid2').value == '') -->
+	<!-- { -->
+		<!-- $('userid2').scrollIntoView(); -->
+		<!-- showError({'field':$('userid2'),'text':'Please enter the param2'}); -->
+		<!-- return false; -->
+	<!-- } -->
+	<!-- if($('userid1').value != '') -->
+	<!-- { -->
+		<!-- var useridtrimmedVal = $('userid1').value.replace(/ /g,''); // to remove all white space; -->
+		<!-- $('userid1').value = useridtrimmedVal; -->
+	<!-- } -->
+	var radioElems = document.getElementsByName('authfactor');
+	if(!radioElems[0].checked && !radioElems[1].checked && !radioElems[2].checked && !radioElems[3].checked)
+	{
+		showXorkeeError({field:$('otlSubmit'),'text':'Please select any one authentication factor.','flag':true});
+		return false;
+	}
+	if($('emailid').value.length>0)
+	{
+		var otlValidateArr=new Array([$('emailid'),6]);
+		var otlValidationErrNote=new Array("emailid");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+			return false;
+	}
+	/*if($('mobileno').value.length)
+	{
+		var otlValidateArr=new Array([$('mobileno'),20]);
+		var otlValidationErrNote=new Array("mobileno");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+			return false;
+	}*/
+	if($('otlparamcount').value==2)	
+	{ 
+		var otlValidateArr=new Array([$('userid2'),1]);
+		var otlValidationErrNote=new Array("Parameter");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+		{
+			return false;
+		}
+	}
+	if($('otlparamcount').value==1)
+		$('userid2').value="";
+	if($('mobileno').value != "")
+	{
+		if($('mobileno').value.length>15)
+		{
+			showError({'field':$('mobileno'),'text':'Please enter a valid mobile Number'});
+			return false;
+		}
+	}
+	Groupcheck();
+	if(!isChecked)
+	{
+		//hideElems(['otlGroups','otlShowG','Groups']);		
+		//otlDisplayErr($(otlFirstGrpID),"Please select a group");
+		showError({'field':$('otlShowG'),'text':'Please select a group'});
+		return false;
+	}
+	/*if(($('certUser').checked) && ($("certificate").value != ""))
+	{
+		var otlValidateArr=new Array([$('certificate'),7]);
+		var otlValidationErrNote=new Array("TTP");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+			return false;
+	}*/ //18OCT2024
+	
+	var reqObj  = {};
+	var fieldArr = [];
+	reqObj.groupinfo = [];
+	var checkedElems = $('otlGroups').getElementsByClassName('groupCheck');
+	for(var i=0;i<checkedElems.length;i++)
+	{
+		if(checkedElems[i].checked) 
+			reqObj.groupinfo.push(checkedElems[i].id);
+			//reqObj.groupinfo.push(checkedElems[i].id.split('_')[1]);
+	}
+	if($('certUser').checked)
+	{
+		fieldArr = ['appname','userid1','username'];
+		<!-- $('certificate').setAttribute("data-mandatory","certificate"); -->
+		<!-- if(!(fieldValidation(fieldArr))) return false; -->
+		reqObj.request = "addcertificateuser";
+		fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','attribute1','attribute2','attribute3','attribute4'];
+		tmploop(fieldArr);
+		<!-- $('certificate').setAttribute("data-mandatory",""); -->
+	}
+	<!-- if($('xorkeeFactor').checked) -->
+	<!-- { -->
+		<!-- fieldArr = ['appname','userid1','userid2','username','xorkeehandle']; -->
+		<!-- //$('xorkeehandle').setAttribute("data-mandatory","xorkee Handle"); -->
+		<!-- if(!(fieldValidation(fieldArr))) return false; -->
+		<!-- reqObj.request = "addxorkeeuser"; -->
+		<!-- fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','xorkeehandle','attribute1','attribute2','attribute3','attribute4']; -->
+		<!-- tmploop(fieldArr); -->
+		<!-- //$('xorkeehandle').setAttribute("data-mandatory",""); -->
+	<!-- } -->
+	if($('deviceotp').checked)
+	{
+		fieldArr = ['appname','userid1','tokenserialnum','username'];
+		$('tokenserialnum').setAttribute("data-mandatory","tokenserialnum");
+		if(!(fieldValidation(fieldArr))) return false;
+		reqObj.request = 'adddeviceotpuser';
+		fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','tokenserialnum','tokenvendor','attribute1','attribute2','attribute3','attribute4'];
+		reqObj.otplogintype = [];
+		reqObj.otptranstype = [];
+		var tmp = ($('plainOTP').checked)?"plainOTP":($('challengeOTP').checked)?"challengeOTP":"e-Signature"; 
+		reqObj.otplogintype.push(tmp);
+		var tmp1  = ($('trans_plainOTP').checked)?"plainOTP":($('trans_challengeOTP').checked)?"challengeOTP":"e-Signature";
+		reqObj.otptranstype.push(tmp1);		  
+		tmploop(fieldArr);
+		$('tokenserialnum').setAttribute("data-mandatory","");
+	}
+	else if($('mobotp').checked)
+	{
+		fieldArr = ['appname','userid1','mobileno','username'];
+		$('mobileno').setAttribute("data-mandatory","mobile number");
+		if(!(fieldValidation(fieldArr))) return false;
+		reqObj.request = 'addmobileotpuser';
+		fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','attribute1','attribute2','attribute3','attribute4'];
+		tmploop(fieldArr);
+		$('mobileno').setAttribute("data-mandatory","");
+	}
+	else if($('smsotp').checked)
+	{
+		fieldArr = ['appname','userid1','mobileno','username'];
+		$('mobileno').setAttribute("data-mandatory","mobileno");
+		if(!(fieldValidation(fieldArr))) return false;
+		reqObj.request = 'addsmsotpuser';
+		fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','attribute1','attribute2','attribute3','attribute4'];
+		$('mobileno').setAttribute("data-mandatory","");
+		tmploop(fieldArr);
+	}
+	function tmploop(fieldArr)
+	{
+		for (var i=0;i<fieldArr.length;i++)
+		{
+			if($(fieldArr[i]).value != '')
+			{
+				if(fieldArr[i] == 'appname')
+				{
+					reqObj.application = $('appname').options[$('appname').options.selectedIndex].innerText.trim();
+				}
+				else if(fieldArr[i] == 'userid1' || fieldArr[i] == 'userid2')
+				{
+					reqObj[fieldArr[i]] = $(fieldArr[i]).value.trim().toUpperCase(); // ANJALI - 01.07.2025
+				}
+				else if(fieldArr[i] == 'xorkeehandle' && fieldArr.value != "")
+				{
+					var handleId = $('xorkeehandle').value.trim().toLowerCase();
+					handleId = (handleId.indexOf("@xorkee.com")!=-1) ? handleId : handleId+"@xorkee.com";
+					reqObj.xorkeehandle = handleId;
+				}
+				else if(fieldArr[i] == 'certificate') 
+				{
+					continue;
+				}
+				else 
+				{
+					reqObj[fieldArr[i]] = $(fieldArr[i]).value.trim();
+				}
+			}
+		}
+		if(fieldArr.indexOf('certificate') != -1)
+		{
+			readFile($('certificate').files[0],'cert',function(buff)
+			{
+				reqObj.certificate = buff;
+				sendReq(reqObj);
+			});
+		}
+		else sendReq(reqObj);		
+	}
+	function sendReq(reqObj)
+	{
+		var trustedipflag;
+		if($('trustedIp_enable').checked) 
+		{
+			reqObj.trustedipflag = true;
+			trustedipflag = true;
+		}
+		else
+		{
+			reqObj.trustedipflag = false;
+			trustedipflag = false;
+		}
+		if(trustedipflag == true)
+		{
+			var trustedIpList = addClientIpObj('returnVal');
+			if(trustedIpList.length > 0)
+			{
+				reqObj.trustediplist = trustedIpList;
+			}
+			else reqObj.trustediplist = [];
+			/*if(reqObj.trustediplist.length == 0)
+			{
+				showError({"field":$('trustedIpRow').children[1],"text":"Add Client IP address."});
+				return false;
+			}*/
+		}
+		var reqName = reqObj.request;
+		var requestObj = {requestBody:reqObj};
+		requestObj.requestBody = JSON.stringify(requestObj.requestBody);
+		var str = "User added successfully";
+		submitfinal(requestObj,"user.htm",str,reqName,function(resp)
+		{
+			if(resp.success)
+			{
+				showSuccessPopup(str,function()
+				{
+					window.location.href = "5000.html?application="+$('appname').value+"";
+				});
+			}
+			else showPopup(resp.errorString);
+		});
+	}
+}
+function modifyUser()
+{
+	var otlValidateArr=new Array([$('username'),1],[$('userid1'),1]);
+	var otlValidationErrNote=new Array("User Name","Parameter Verifier")
+
+  //if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+		//return false;
+	if($('emailid').value.length>0)
+	{
+		var otlValidateArr=new Array([$('emailid'),6]);
+		var otlValidationErrNote=new Array("emailid");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+			return false;
+	}
+	if($('otlparamcount').value==2)	
+	{ 
+		var otlValidateArr=new Array([$('userid2'),1]);
+		var otlValidationErrNote=new Array("Parameter");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+		{
+			return false;
+		}
+	}
+	if($('otlparamcount').value==1)
+		$('userid2').value="";
+		
+	if($('mobileno').value != "")
+	{
+		if($('mobileno').value.length>15)
+		{
+			otlDisplayErr($('mobileno'),"Please enter a valid mobile Number");
+			return false;
+		}
+	}
+	Groupcheck();
+	if(!isChecked)
+	{
+		hideElems(['otlGroups','otlShowG','Groups']);		
+		otlDisplayErr($(otlFirstGrpID),"Please select a group");
+		return false;
+	}
+	
+	if(($('certUser').checked) && ($("certificate").value != ""))
+	{
+		var otlValidateArr=new Array([$('certificate'),7]);
+		var otlValidationErrNote=new Array("TTP");
+		if(otl_Validation(otlValidateArr,otlValidationErrNote)==-1)
+			return false;
+	}
+	var fieldArr = ["appname","userid1"];
+	if(!fieldValidation(fieldArr)) return false;
+	fieldArr = ["appname","userid1","userid2","username","emailid","mobileno","certificate","attribute1","attribute2","attribute3","attribute4"];
+	<!-- if($("xorkeecert").value != "") -->
+	<!-- { -->
+		<!-- if(!fieldValidation(['xorkeecert'])) return false; -->
+		<!-- else fieldArr.push('xorkeecert'); -->
+	<!-- } -->
+	var reqObj = {};
+	reqObj.request = "modifyuser"; 
+	reqObj.groupinfo = [];
+	var checkedElems = document.getElementsByClassName('groupCheck');
+	for( var i=0;i<checkedElems.length;i++)
+	{
+		if (checkedElems[i].checked)
+			<!-- reqObj.groupinfo.push(checkedElems[i].id.split('_')[1]); -->
+			reqObj.groupinfo.push(checkedElems[i].id);
+	}
+	var trustedipflag;
+	if($('trustedIp_enable').checked) 
+	{
+		reqObj.trustedipflag = true;
+		trustedipflag = true;
+	}
+	else
+	{
+		reqObj.trustedipflag = false;
+		trustedipflag = false;
+	}
+	if(trustedipflag == true)
+	{
+		var trustedIpList = addClientIpObj('returnVal');
+		if(trustedIpList.length > 0)
+		{
+			reqObj.trustediplist = trustedIpList;
+		}
+		else
+		{
+			reqObj.trustediplist = [];
+			alert('Add trusted IP');
+			return false;
+		}
+	}
+	for (var i=0;i<fieldArr.length;i++)
+	{
+		if($(fieldArr[i]).value != '')
+		{
+			if(fieldArr[i] == 'appname')
+			{
+				reqObj.application = $('appname').options[$('appname').options.selectedIndex].innerText;
+			}
+			else if(fieldArr[i] == 'certificate') continue;
+			else 
+			{
+				reqObj[fieldArr[i]] = $(fieldArr[i]).value.trim();
+			}
+		}
+	}
+	if($('certificate').value != '' && fieldArr.indexOf('certificate') != -1)
+	{
+		readFile($('certificate').files[0],'cert',function(buff)
+		{
+			reqObj.certificate = buff;
+			//sendReq(reqObj);
+			<!-- if($('xorkeecert').value != '' && fieldArr.indexOf('xorkeecert') != -1) -->
+			<!-- { -->
+				<!-- readFile($('xorkeecert').files[0],'cert',function(buff) -->
+				<!-- { -->
+					<!-- reqObj.xorkeecert = buff; -->
+					<!-- sendReq(reqObj); -->
+					
+				<!-- }); -->
+			<!-- } -->
+			sendReq(reqObj);
+		});
+	}
+	<!-- else if($('xorkeecert').value != '' && fieldArr.indexOf('xorkeecert') != -1) -->
+	<!-- { -->
+		<!-- readFile($('xorkeecert').files[0],'cert',function(buff) -->
+		<!-- { -->
+			<!-- reqObj.xorkeecert = buff; -->
+			<!-- sendReq(reqObj); -->
+			
+		<!-- }); -->
+	<!-- } -->
+	else sendReq(reqObj);
+	function sendReq()
+	{
+		reqObj.oldData = userDetails;
+		var reqName = reqObj.request;
+		var requestObj = {requestBody:reqObj};
+		requestObj.requestBody = JSON.stringify(requestObj.requestBody);
+		var str = "User modified successfully";
+		submitfinal(requestObj,"user.htm",str,reqName,function(resp)
+		{
+			if(resp.success)
+			{
+				showSuccessPopup(str,function()
+				{
+					window.location.href = "5000.html?application="+$('appname').value+"";
+				});
+			}
+			else showPopup(resp.errorString);
+		});
+	}
+}
+function displayAuthInfo(flag,thirdFactorFlag)
+{
+	var reqObj = {};
+	reqObj.request = 'userauthinfo';
+	reqObj.application = $('appname').value;
+	reqObj.userid1 = $('userid1').value.toUpperCase(); //ANJALI - 02.07.2025
+	reqObj.userid2 = $('userid2').value.toUpperCase(); //ANJALI - 02.07.2025
+	if(flag)
+		populateAuthFactors({});
+	else {
+		ajax("POST", "user.htm", JSON.stringify(reqObj), function(resp)
+		{
+			if(resp.success) populateAuthFactors(resp);
+			else 
+			{
+				showPopup(resp.errorString);
+				populateAuthFactors({});
+			}
+		});
+	}
+	
+	function populateAuthFactors(resp)
+	{
+		var tmpData = '';
+		var tmp = '';
+		if($('popupDullScreen')) document.body.removeChild($('popupDullScreen'));
+		if($('popupMessageArea')) document.body.removeChild($('popupMessageArea'));
+		var dullScreen = otlCreateElement("div").setAttribute('class','dullScreenStyle').setAttribute('id','popupDullScreen').appendTo(document.body);
+		dullScreen.style.cssText += "display:block;z-index:450;";
+		var popup = otlCreateElement("div").setAttribute('id','popupMessageArea').style('top:10%;left:25%;height:80%;width:50%;text-align:left;').appendTo(document.body);
+		var close = otlCreateElement("span").setAttribute('class','closePopup').appendTo(popup);
+		var respMsg = otlCreateElement("div").setAttribute('class','authPopupText').setAttribute('id','adminPopText').appendTo(popup);
+		respMsg.style.cssText = "height:90%";
+		close.innerHTML = "&#x274c;";
+		close.onclick = function(ev)
+		{
+			cancelEvent(ev);
+			 document.body.removeChild($('popupDullScreen'));
+			document.body.removeChild($('popupMessageArea'));
+		}
+		var heading = otlCreateElement('div').addContent('innerHTML','Authentication Factor').style('font:bold 16px helvetica;text-align:center;').appendTo($('adminPopText'));
+		var body = otlCreateElement('div').style('height:95%;width:100%;overflow:hidden;top:10%;').appendTo($('adminPopText'));
+		var addNew = otlCreateElement('div').style('height:auto;width:100%;').appendTo(body);
+		var text = otlCreateElement('div').style('width:95%;margin:1% auto;').addContent('innerHTML','<span style="display:inline-block;width:28%;color:blue;text-decoration:underline;font:normal 1em helvetica;">Authentication</span><span class="addTextBtn">+</span>').appendTo(addNew);
+		var outer = otlCreateElement('div').style('display:none;width:65%;margin:1% auto;').appendTo(text);
+		var select = otlCreateElement('select').setAttribute('id','authfactor').setAttribute('class','formInput').appendTo(outer);
+		addAuthFactor(authfactor);
+		text.onclick=function()
+		{
+			outer.style.display = "inline-block";
+		}
+		select.onchange = function()
+		{
+			authFactorOnChange();
+		}
+		var row2 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').appendTo(addNew);
+		var rowLabel = otlCreateElement('span').setAttribute('class','formLabel').addContent('innerHTML','Certificate').appendTo(row2);
+		var certField  = otlCreateElement('input').setAttribute('type','file').setAttribute('class','formValue').style('width:35%;').setAttribute('id','certField').setAttribute('data-mandatory','certificate').appendTo(row2);
+		var row3 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').appendTo(addNew);
+		var rowLabel = otlCreateElement('span').setAttribute('class','formLabel').addContent('innerHTML','Token Serial No.').appendTo(row3);
+		var tokenserialnum  = otlCreateElement('input').setAttribute('type','text').setAttribute('id','tokenserialnumber').setAttribute('data-mandatory','Token Serial Number').setAttribute('class','formInput').appendTo(row3);
+		var row4 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').appendTo(addNew);
+		var rowLabel = otlCreateElement('span').setAttribute('class','formLabel').addContent('innerHTML','Vendor').appendTo(row4);
+		var vendor  = otlCreateElement('select').setAttribute('class','formValue').appendTo(row4);
+		var etoken  = otlCreateElement('option').setAttribute('value','ETOKEN').addContent('innerHTML','e-Token').appendTo(vendor);
+		var athena  = otlCreateElement('option').setAttribute('value','ATHENA').addContent('innerHTML','Athena').appendTo(vendor);
+		var etoken  = otlCreateElement('option').setAttribute('value','VASCO').addContent('innerHTML','Vasco').appendTo(vendor);
+		var row5 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').appendTo(addNew);
+		var rowLabel = otlCreateElement('span').setAttribute('class','formLabel').addContent('innerHTML','Mobile No.').appendTo(row5);
+		var mobileno  = otlCreateElement('input').setAttribute('type','text').setAttribute('maxlength',15).setAttribute('class','formInput').setAttribute('id','mobile').appendTo(row5);
+		var row6 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').addContent('innerHTML','<span class="formLabel">Login Authentication Type</span><span class="formValue"><input type="radio" id="login_plainOTP" name="loginAuthType" checked/>Plain OTP<input type="radio" id="login_challengeOTP" name="loginAuthType"/>Challenge OTP<input type="radio" id="login_e-signature" name="loginAuthType"/> e-Signature</span>').appendTo(addNew);
+		var row7 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').addContent('innerHTML','<span class="formLabel">Transaction Authentication Type</span><span class="formValue"><input type="radio" id="addauth_plainOTP" name="transAuthType" checked/>Plain OTP<input type="radio" id="addauth_challengeOTP" name="transAuthType"/>Challenge OTP<input type="radio" id="addauth_e-signature" name="transAuthType"/> e-Signature</span>').appendTo(addNew);
+		var row8 = otlCreateElement('div').setAttribute('class','formRow').style('display:none;').appendTo(addNew);
+		var rowLabel = otlCreateElement('span').style('width:33%;').setAttribute('class','formLabel').addContent('innerHTML','xorkee Handle').appendTo(row8);
+		var xorkeeHandleDiv = otlCreateElement('div').style('position:relative;width:35%;background:#fefefe;').setAttribute('class','formInput').appendTo(row8);
+		var xorkeehandle  = otlCreateElement('input').setAttribute('type','text').setAttribute('class','formInput').style('height:25px;box-shadow:none;border:none;').setAttribute('id','handle').appendTo(xorkeeHandleDiv);
+		var handlePlaceHolder = otlCreateElement('span').style('position: absolute;width: 35%;right: 3%;top: 15%;font-size: 0.75em;').setAttribute('class','formLabel').addContent('innerHTML','@xorkee.com').appendTo(xorkeeHandleDiv);
+		<!-- xorkeehandle.onkeypress = function(event) -->
+		<!-- { -->
+			<!-- if(event.keyCode == 64) -->
+			<!-- { -->
+				<!-- event.preventDefault(); -->
+				<!-- console.log('false'); -->
+			<!-- } -->
+		<!-- } -->
+		//var br = otlCreateElement('br').appendTo(body);
+		if(!thirdFactorFlag)
+		{
+			var submit = otlCreateElement('div').addContent('innerHTML','Submit').setAttribute('class','formBtn').style('margin:2% -2%;').appendTo($('adminPopText'));
+			submit.onclick = function()
+			{
+				if(outer.style.display == 'none') return false;	
+				var field = "";
+				if(select.value == 'Certificate')
+				{
+					field = certField;
+				}
+				else if(select.value == 'Device OTP')
+				{
+					field = tokenserialnum;
+				}
+				else if(select.value == 'Mobile OTP')
+				{
+					field = mobileno;
+				}
+				if(field.value == '')
+				{
+					showError({'field':field,'text':'Provide valid parameter'});
+					return false;
+				}
+				else
+				{
+					var reqObj = {};
+					var reqName = (select.value == 'Certificate')?'addcertificateuser':(select.value == 'Device OTP')?'adddeviceotpuser':(select.value == 'Mobile OTP')?'addmobileotpuser':'addsmsotpuser';
+					reqObj.request = reqName;
+					var fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','attribute1','attribute2','attribute3','attribute4'];
+					for(var i=0;i<fieldArr.length;i++)
+					{
+						if(fieldArr[i] == 'appname')
+						{
+							reqObj.application = $('appname').value;
+						}
+						else reqObj[fieldArr[i]] = $(fieldArr[i]).value;
+					}
+					if(reqName == 'addcertificateuser')
+					{
+						if(!fieldValidation(['certField'])) return false;
+						else
+						{
+							readFile($('certField').files[0],'cert',function(buff)
+							{
+								reqObj.certificate = buff;
+								sendAddReq(reqObj);
+							});
+						}
+					}
+					else if(reqName == 'adddeviceotpuser')
+					{
+						reqObj.tokenserialnum = tokenserialnum.value;
+						reqObj.tokenvendor = vendor.value;
+						reqObj.otplogintype = ($('login_plainOTP').checked)?"plainOTP":($('login_challengeOTP').checked)?"challengeOTP":"e-Signature"; 
+						reqObj.otptranstype  = ($('addauth_plainOTP').checked)?"plainOTP":($('addauth_challengeOTP').checked)?"challengeOTP":"e-Signature";
+						if(!fieldValidation(['tokenserialnumber'])) return false;
+						else sendAddReq(reqObj);
+					}
+					else if(reqName == 'addmobileotpuser' || reqName == 'addsmsotpuser')
+					{
+						reqObj.mobileno = mobileno.value;
+						if(!fieldValidation(['mobile'])) return false;
+						if($('mobileno').value.length>15)
+						{
+							otlDisplayErr($('mobileno'),"Please enter a valid mobile Number");
+							return false;
+						}
+						else sendAddReq(reqObj);
+					}
+				}
+			}
+		}
+		else
+		{
+			var disableTfaBtn = otlCreateElement('div').addContent('innerHTML','Disable Third Factor').setAttribute('class','formBtn').style('width:160px;').appendTo($('adminPopText'));
+			
+			disableTfaBtn.onclick = function()
+			{
+				var reqObj = {};
+				reqObj.request = 'disabletfa';
+				reqObj.application = $('appname').value;
+				reqObj.userid1 = $('userid1').value.toUpperCase(); //ANJALI - 02.07.2025
+				reqObj.userid2 = $('userid2').value.toUpperCase(); //ANJALI - 02.07.2025
+				sendXmlRequest(JSON.stringify(reqObj),function(resp)
+				{
+					if(resp.success)
+						showSuccessPopup("Third Factor disabled successfully");
+					else showPopup(resp.errorString);
+				});
+			}
+		}
+		if(!flag)
+		{
+			var existing = otlCreateElement('div').style('height:290px;overflow-y:auto;margin-top:3%;').appendTo(body);
+			var header = otlCreateElement('div').style('width:95%;margin:0% auto;').addContent('innerHTML','<i style="font-size:1em;text-decoration:underline;">Existing Authentication</i>').appendTo(existing);
+			for( var key in resp)
+			{
+				if(key == 'cert')
+				{
+					var row = otlCreateElement('div').style('width:95%;margin:1.5% auto;').appendTo(existing);
+					var name = otlCreateElement('div').setAttribute('class','subHeader').addContent('innerHTML','Certificate').appendTo(row);
+					var delBtn = otlCreateElement('span').setAttribute('class','addTextBtn').setAttribute('title','Delete Authentication').addContent('innerHTML','&#xd7;').appendTo(row);
+					for(var subKey in resp.cert)
+					{
+						if(subKey == 'certificate') continue;
+						if(resp.cert[subKey] != null && resp.cert[subKey] != 'null')
+						{
+							if(subKey == 'validfrom' || subKey == 'validto' || subKey == 'registeredon')
+							{
+								resp.cert[subKey] = dateToString(ifUndefined(resp.cert[subKey]));
+							}
+							var row = otlCreateElement('div').setAttribute('class','formRow').appendTo(existing);
+							row.innerHTML="<span class='formLabel'>"+insertSpace(subKey)+"</span><span class='formInput'>"+resp.cert[subKey]+"</span>";
+						}
+					}
+					delBtn.onclick = function()
+					{
+						sendReq('certificate');
+					}
+				}
+				if(key == 'mobileotp')
+				{
+					var row = otlCreateElement('div').style('width:95%;margin:1.5% auto;').appendTo(existing);
+					var name = otlCreateElement('div').setAttribute('class','subHeader').addContent('innerHTML','Mobile OTP').appendTo(row);
+					var delBtn = otlCreateElement('span').setAttribute('class','addTextBtn').setAttribute('title','Delete Authentication').addContent('innerHTML','&#xd7;').appendTo(row);
+					for(var subKey in resp.mobileotp)
+					{
+						if(resp.mobileotp[subKey] != null && resp.mobileotp[subKey] != 'null')
+						{
+							if(subKey == 'validfrom' || subKey == 'validto' || subKey == 'registeredon')
+							{
+								resp.mobileotp[subKey] = dateToString(ifUndefined(resp.mobileotp[subKey]));
+							}
+							var row = otlCreateElement('div').setAttribute('class','formRow').appendTo(existing);
+							row.innerHTML="<span class='formLabel'>"+insertSpace(subKey)+"</span><span class='formInput'>"+resp.mobileotp[subKey]+"</span>";
+						}
+					}
+					delBtn.onclick = function()
+					{
+						sendReq('mobileotp');
+					}
+				}
+				if(key == 'deviceotp')
+				{
+					var row = otlCreateElement('div').style('width:95%;margin:1.5% auto;').appendTo(existing);
+					var name = otlCreateElement('div').setAttribute('class','subHeader').addContent('innerHTML','Device OTP').appendTo(row);
+					var delBtn = otlCreateElement('span').setAttribute('class','addTextBtn').setAttribute('title','Delete Authentication').addContent('innerHTML','&#xd7;').appendTo(row);
+					for(var subKey in resp.deviceotp)
+					{
+						if(resp.deviceotp[subKey] != null  && resp.deviceotp[subKey] != 'null')
+						{
+							if(subKey == 'validfrom' || subKey == 'validto' || subKey == 'registeredon')
+							{
+								resp.deviceotp[subKey] = dateToString(ifUndefined(resp.deviceotp[subKey]));
+							}
+							var row = otlCreateElement('div').setAttribute('class','formRow').appendTo(existing);
+							if(subKey == 'otplogintype')
+							{
+								for(i=0;i<resp.deviceotp['otplogintype'].length;i++)
+								{
+									row.innerHTML="<span class='formLabel'>Login Authentication Type</span><span class='formInput'>"+resp.deviceotp['otplogintype'][i]+"</span>";
+								}
+							}
+							else if(subKey == 'otptranstype')
+							{
+								for(i=0;i<resp.deviceotp['otptranstype'].length;i++)
+								{
+									row.innerHTML="<span class='formLabel'>Transaction Authentication Type</span><span class='formInput'>"+resp.deviceotp['otptranstype'][i]+"</span>";
+								}
+							}
+							else row.innerHTML="<span class='formLabel'>"+insertSpace(subKey)+"</span><span class='formInput'>"+resp.deviceotp[subKey]+"</span>";
+						}
+					}
+					delBtn.onclick = function()
+					{
+						sendReq('deviceotp');
+					}
+				}
+				if(key == 'smsotp')
+				{
+					var row = otlCreateElement('div').style('width:95%;margin:1.5% auto;').appendTo(existing);
+					var name = otlCreateElement('div').setAttribute('class','subHeader').addContent('innerHTML','SMS OTP').appendTo(row);
+					var delBtn = otlCreateElement('span').setAttribute('class','addTextBtn').addContent('innerHTML','&#xd7;').setAttribute('title','Delete Authentication').appendTo(row);
+					for(var subKey in resp.smsotp)
+					{
+						if(resp.smsotp[subKey] != null && resp.smsotp[subKey] != 'null')
+						{
+							if(subKey == 'validfrom' || subKey == 'validto' || subKey == 'registeredon')
+							{
+								resp.smsotp[subKey] = dateToString(ifUndefined(resp.smsotp[subKey]));
+							}
+							var row = otlCreateElement('div').setAttribute('class','formRow').appendTo(existing);
+							row.innerHTML="<span class='formLabel'>"+insertSpace(subKey)+"</span><span class='formInput'>"+resp.smsotp[subKey]+"</span>";
+						}
+					}
+					delBtn.onclick = function()
+					{
+						sendReq('smsotp');
+					}
+				}
+				<!-- if(key == 'xorkee') -->
+				<!-- { -->
+					<!-- var row = otlCreateElement('div').style('width:95%;margin:1.5% auto;').appendTo(existing); -->
+					<!-- var name = otlCreateElement('div').setAttribute('class','subHeader').addContent('innerHTML','xorkee').appendTo(row); -->
+					<!-- var delBtn = otlCreateElement('span').setAttribute('class','addTextBtn').addContent('innerHTML','&#xd7;').setAttribute('title','Delete Authentication').appendTo(row); -->
+					<!-- for(var subKey in resp.xorkee) -->
+					<!-- { -->
+						<!-- if(resp.xorkee[subKey] != null && resp.xorkee[subKey] != 'null') -->
+						<!-- { -->
+							<!-- //if(subKey == 'validfrom' || subKey == 'validto' || subKey == 'registeredon') -->
+							<!-- //{ -->
+								<!-- //resp.xorkee[subKey] = dateToString(ifUndefined(resp.xorkee[subKey])); -->
+							<!-- //} -->
+							<!-- var row = otlCreateElement('div').setAttribute('class','formRow').appendTo(existing); -->
+							<!-- row.innerHTML="<span class='formLabel'>"+insertSpace(subKey)+"</span><span class='formInput'>"+resp.xorkee[subKey]+"</span>"; -->
+						<!-- } -->
+					<!-- } -->
+					<!-- delBtn.onclick = function() -->
+					<!-- { -->
+						<!-- sendReq('xorkee'); -->
+					<!-- } -->
+				<!-- } -->
+			}
+		}
+		else
+		{
+			popup.style.height = "auto";
+		}
+		submit.onclick = function()
+		{
+			if(outer.style.display == 'none') return false;	
+			
+			var field = "";
+			if(select.value == 'Certificate')
+			{
+				field = certField;
+			}
+			else if(select.value == 'Device OTP')
+			{
+				field = tokenserialnum;
+			}
+			else if(select.value == 'Mobile OTP')
+			{
+				field = mobileno;
+			}
+			else if(select.value == '')
+			{
+				showError({'field':select,'text':'Provide authentication factor'});
+				return false;
+			}
+			if(!(select.value == 'Certificate') && field.value == '')
+			{
+				showError({'field':field,'text':'Provide valid parameter'});
+				return false;
+			}
+			else
+			{
+				var reqObj = {};
+				var reqName = (select.value == 'Certificate')?'addcertificateuser':(select.value == 'Device OTP')?'adddeviceotpuser':(select.value == 'Mobile OTP')?'addmobileotpuser':(select.value == 'xorkee')?'addxorkeeuser':'addsmsotpuser';
+				reqObj.request = reqName;
+				var fieldArr = ['appname','username','emailid','mobileno','userid1','userid2','attribute1','attribute2','attribute3','attribute4'];
+				for(var i=0;i<fieldArr.length;i++)
+				{
+					if(fieldArr[i] == 'appname')
+					{
+						reqObj.application = $('appname').value;
+					}
+					else reqObj[fieldArr[i]] = $(fieldArr[i]).value;
+				}
+				if(reqName == 'addcertificateuser')
+				{
+					if(field.value!='')
+					{
+						readFile($('certField').files[0],'cert',function(buff)
+						{
+							reqObj.certificate = buff;
+							sendAddReq(reqObj);
+						});
+					}
+					else
+						sendAddReq(reqObj);
+				}
+				else if(reqName == 'adddeviceotpuser')
+				{
+					reqObj.tokenserialnum = tokenserialnum.value;
+					reqObj.tokenvendor = vendor.value;
+					reqObj.otplogintype = ($('login_plainOTP').checked)?"plainOTP":($('login_challengeOTP').checked)?"challengeOTP":"e-Signature"; 
+					reqObj.otptranstype  = ($('addauth_plainOTP').checked)?"plainOTP":($('addauth_challengeOTP').checked)?"challengeOTP":"e-Signature";
+					if(!fieldValidation(['tokenserialnumber'])) return false;
+					else sendAddReq(reqObj);
+				}
+				else if(reqName == 'addmobileotpuser' || reqName == 'addsmsotpuser')
+				{
+					reqObj.mobileno = mobileno.value;
+					if(!fieldValidation(['mobile'])) return false;
+					if($('mobileno').value.length>15)
+					{
+						otlDisplayErr($('mobileno'),"Please enter a valid mobile Number");
+						return false;
+					}
+					else sendAddReq(reqObj);
+				}
+				<!-- else if(reqName == 'addxorkeeuser') -->
+				<!-- { -->
+					<!-- if($('handle').value != "") -->
+					<!-- { -->
+						<!-- reqObj.xorkeehandle = xorkeehandle.value.trim()+'@xorkee.com'; -->
+						<!-- sendAddReq(reqObj); -->
+					<!-- } -->
+					<!-- else sendAddReq(reqObj); -->
+				<!-- } -->
+			}
+		}
+		function authFactorOnChange()
+		{
+			row2.style.display = row3.style.display = row4.style.display = row5.style.display =  row6.style.display =  row7.style.display = "none";
+			if($('authfactor').value == 'Device OTP') 
+			{
+				if(!flag) 
+				existing.style.maxHeight='350px';
+				row3.style.display = "block";
+				row4.style.display = "block";
+				row6.style.display = "block";
+				row7.style.display = "block";
+			}
+			else if($('authfactor').value == 'Certificate')
+			{
+				row2.style.display = "block";
+			}
+			else if($('authfactor').value == 'Mobile OTP' || $('authfactor').value == 'SMS OTP')
+			{
+				row5.style.display = "block";
+			}
+			<!-- else if($('authfactor').value == 'xorkee') -->
+			<!-- { -->
+				<!-- row8.style.display = "block"; -->
+			<!-- } -->
+		}
+	}
+	function sendAddReq(reqObj)
+	{
+		
+		var reqName = reqObj.request;
+		var trustedipflag;
+		if($('trustedIp_enable').checked) 
+		{
+			reqObj.trustedipflag = true;
+			trustedipflag = true;
+		}
+		else
+		{
+			reqObj.trustedipflag = false;
+			trustedipflag = false;
+		}
+		if(trustedipflag == true)
+		{
+			/*if(reqObj.trustediplist.length == 0)
+			{
+				showError({"field":$('trustedIpRow').children[1],"text":"Add Client IP address."});
+				return false;
+			}*/
+			var trustedIpList = addClientIpObj('returnVal');
+			if(trustedIpList.length > 0)
+			{
+				reqObj.trustediplist = trustedIpList;
+			}
+			else reqObj.trustediplist = [];
+		}
+		var requestObj = {requestBody:reqObj};
+		requestObj.requestBody = JSON.stringify(requestObj.requestBody);
+		var str = "Authentication added successfully";
+		submitfinal(requestObj,"user.htm",str,reqName,function(resp)
+		{
+			if(resp.success)
+			{
+				showPopup(str,function()
+				{
+					setTimeout(function()
+					{
+						window.location.href = "5000.html?application="+$('appname').value+"";
+					},100);
+				});
+			}
+			else showPopup(resp.errorString);
+		});
+	}
+	function sendReq(authType)
+	{
+		var reqObj = {};
+		reqObj.request = 'deleteauth';
+		reqObj.application = $('appname').value;
+		reqObj.userid1 = $('userid1').value.toUpperCase(); //ANJALI - 02.07.2025
+		reqObj.userid2 = $('userid2').value.toUpperCase(); //ANJALI - 02.07.2025
+		reqObj.authtype = authType;
+		var reqName = reqObj.request;
+		var requestObj = {requestBody:reqObj};
+		requestObj.requestBody = JSON.stringify(requestObj.requestBody);
+		var str = "Authentication deleted successfully";
+		submitfinal(requestObj,"user.htm",str,reqName,function(resp)
+		{
+			if(resp.success)
+			{
+				showSuccessPopup(str,function()
+				{
+					setTimeout(function()
+					{
+						window.location.href = "5000.html?application="+$('appname').value+"";
+					},100);
+				});
+			}
+			else showPopup(resp.errorString);
+		});
+	}
+}
+function reRegisterMotp(mobileno)
+{
+	var reqObj = {"request":"reregisteruser", "mobileno": mobileno, "application": $("appname").value};
+	ajax("POST", "user.htm", JSON.stringify(reqObj), function(resp)
+	{
+		if(resp.success)
+		{
+			showPopup("User set for mobile OTP re-registration");
+			setTimeout(function()
+			{
+				window.location.href = "5000.html?application="+$('appname').value+"";
+			},500);
+		}
+		else showPopup(resp.errorString);
+	});
+}
+function unblockSeed(mobileno)
+{
+	var reqObj = {"request":"unblockseed", "mobileno": mobileno, "application": $("appname").value};
+	ajax("POST", "user.htm", JSON.stringify(reqObj), function(resp)
+	{
+		if(resp.success)
+		{
+			showPopup("Seed unblocked successfully");
+			setTimeout(function()
+			{
+				window.location.href = "5000.html?application="+$('appname').value+"";
+			},500);
+		}
+		else showPopup(resp.errorString);
+	});
+}
+function addAuthFactor(data)
+{
+	<!-- var arr = ["[SELECT]","Certificate","Device OTP","Mobile OTP","SMS OTP","xorkee"]; -->
+	var arr = ["[SELECT]","Certificate","Device OTP","Mobile OTP","SMS OTP"];
+	for(var i=0;i<data.length;i++)
+	{
+		for(var j=0;j<arr.length;j++)
+		{
+			if(data[i] == arr[j]) arr.splice(j,1);
+		}
+	}
+	for(var j=0;j<arr.length;j++)
+	{
+		if(j==0)
+			$("authfactor").options[$("authfactor").options.length] = new Option(arr[j],'');
+		else
+			$("authfactor").options[$("authfactor").options.length] = new Option(arr[j], arr[j]);
+	}
+}
+
+function authChange()
+{
+	hideElems(["certificateDiv","serialNoRow","vendorRow","transAuthType","loginAuthType"]);
+	if($("deviceotp").checked)
+	{
+		$("serialNoRow").style.display = "table-row";
+		$("vendorRow").style.display = "table-row";
+		$("transAuthType").style.display = "table-row";
+		$("loginAuthType").style.display = "table-row";
+	}
+	else if($("certUser").checked)
+	{	
+		$("certificateDiv").style.display = "table-row";
+	}
+	<!-- else if($("xorkeeFactor").checked) -->
+	<!-- { -->
+		<!-- $("xorkeehandleDiv").style.display = "table-row"; -->
+	<!-- } -->
+}
+
+/*************** Add Trusted IP Function Starts here **************/
+function trustedIpOnChange()
+{
+	var trustedIpList = addClientIpObj('returnVal');
+	if($('trustedIp_disable').checked)
+	{
+		hideElems(['trustedIpRow']);
+		if(trustedIpList.length > 0)
+		{
+			confirmationPopup("Disabling trusted IP will delete all the IP(s) added earlier. Do you wish to proceed?",function(flag)
+			{
+				if(flag)
+				{
+					var trustedIpList = addClientIpObj('delete');
+				}
+				else $('trustedIp_enable').checked = true;
+			});
+		}
+	}
+	else
+	{
+		showElems(['trustedIpRow'],'table-row');
+	}
+}
+function addClientIpPopup()
+{
+	showElems(['appPopupOverlay','clientIpPopupDiv'],'block');
+	$('clientIpPopupDiv').children[0].children[0].onclick=function()
+	{
+		hideElems(['appPopupOverlay','clientIpPopupDiv']);
+	}
+}
+function addClientIpClick()
+{
+	if(!fieldValidation(['clientIpTxtBox'])) return false;
+	addClientIpObj('create',$('clientIpTxtBox').value);
+}
+function saveClientIp()
+{
+	var arr = addClientIpObj('returnVal');
+	if(arr.length == 0)
+	{
+		if(!fieldValidation(['clientIpTxtBox'])) return false;
+		return false;
+	}
+	$('clientIpPopupDiv').children[0].children[0].click();
+	sendXmlRequest(JSON.stringify({'request':'validateIpAddress','ipAddress':arr}), function(resp)
+	{
+		if(!resp.success)
+		{
+			showPopup("Invalid IP Address");
+			return false;
+		}
+	});
+}
+function addClientIp()
+{
+	var ipArr = [];
+	$('addedClientIp').innerHTML = "";
+	function createElems(ipAddr)
+	{
+		if(ipArr.indexOf(ipAddr) != -1)
+		{
+			showError({'field':$('clientIpTxtBox'),'text':'No two IP address should be the same.','flag':true});
+			return false
+		}
+		$('clientIpTxtBox').value = '';
+		var holder = otlCreateElement("div").setAttribute("class","appAddHolder").addContent("innerHTML",ipAddr).appendTo($('addedClientIp'));
+		var deleteElem = otlCreateElement("span").setAttribute("class","appAddDelete").addContent("innerHTML",'&#x00D7;').appendTo(holder);
+		deleteElem.onclick = function(){
+			this.parentNode.parentNode.removeChild(this.parentNode);
+			ipArr.map(function(a,index)
+			{
+				if(a == ipAddr)	ipArr.splice(index,1);
+				return a;
+			});
+		}
+		$('clearIp').onclick = function()
+		{
+			$('addedClientIp').innerHTML = '';
+			ipArr = [];
+		}
+		ipArr.push(ipAddr);
+	}
+	function addedIpFields(flag,ip)
+	{
+		if(flag=='returnVal') return ipArr;
+		else if(flag=='create') createElems(ip);
+		else if(flag=='delete') 
+		{
+			$('addedClientIp').innerHTML = '';
+			ipArr=[];
+		}
+	}
+	return addedIpFields;
+}
+/********************************************** Add Trusted IP ends ************************************************************/
+function otl_prompt()
+{
+  document.getElementById('bkscreen').style.display='inline';
+  document.getElementById('condiv').style.display='inline';
+}
+function otl_CheckGAll(otlObj)
+{
+	if(otlObj.checked)
+	{
+			for(m=0;m<otlGblGroups.length-1;m+=2)
+					$(otlGblGroups[m+1]).checked=true;
+
+	}
+	else
+	{
+			for(m=2;m<otlGblGroups.length-1;m+=2)
+					$(otlGblGroups[m+1]).checked=false;
+	}
+}
+function otl_FillParamDetails(otlResponse)
+{
+	var otlParam=otlResponse.split("#");
+	$("paramLabel1").innerHTML=otlParam[0];
+	if(otlParam[1]!="")
+	{
+		//firefox support 28/8/13
+		$('param2').style.display="table-row"
+		$("paramLabel2").innerHTML=otlParam[1];
+		$("userid2").style.display="inline";
+		$('otlparamcount').value=2;
+	}
+	else
+	{
+		$('otlparamcount').value=1;	
+		$('param2').style.display="none";
+	}
+}
+function Otl_FormGroupDetails(groups)
+{
+	otlGblGroups=groups.split("#");
+	groups=groups.split("#");
+	var grp="";
+	var k=0;
+	///when no group is selected we can setfocus to the first group id by retrieving the id
+	var m=0;
+	$("FirstGroupId").value=groups[m+1];
+	grp+="<table width=80% align=center> "
+	for(m=0;m<groups.length-1;m++)
+	{
+		if(m==0)
+			otlFirstGrpID=groups[m+1];
+
+		if(k%4 == 0)
+			grp+="<tr class='otlNormalText'>";
+		if(m==0)
+		{
+			if(groups[m]==0)	
+			grp+="<td width=25%><input type=checkbox class='groupCheck' name='"+groups[m+1]+"' id='"+groups[m+1]+"' checked='true' disabled='true'>"+groups[m+1]+"</td>";
+			else
+
+			grp+="<td width=25%><input type=checkbox class='groupCheck' name='"+groups[m+1]+"' id='"+groups[m+1]+"' checked='true' >"+groups[m+1]+"</td>";
+		}
+		else
+			grp+="<td width=25%><input type=checkbox class='groupCheck' name='"+groups[m+1]+"' id='"+groups[m+1]+"'>"+groups[m+1]+"</td>";
+
+		m++;
+		k++;
+		if(k%4 == 0)
+			grp+="</tr>";
+	}
+	grp+="</table>"
+		$('otlGroups').innerHTML=grp;
+}
+function Groupcheck()
+{
+	var GVal = "";
+	isChecked=0;
+	for(m=0;m<otlGblGroups.length-1;m++)
+	{
+		gname = otlGblGroups[m+1];
+		if($(gname).checked)
+		{
+			GVal += otlGblGroups[m+1]+"#";
+			isChecked++;
+		}
+		m++;
+	}
+	GVal=GVal.slice(0,GVal.length-1);
+	$("otlGroupsLen").value=isChecked;
+	$("otlGrouphash").value = GVal;
+}
+function otl_GetAppList(otlresp)
+{
+	otlgroups=otlresp.split("#");
+	if(otlgroups[0]!="EOF")
+	{	
+		j=0;
+		for(var i=0;i<(otlgroups.length-1);i+=2)
+		{
+			$('application').options[j++]=new Option(otlgroups[i+1],otlgroups[i]);		
+		}
+		otlDisplayParams();
+	}
+	else
+	{
+		$("otlSubmit").style.display="none";
+		$("otlReset").style.display="none";
+	}
+}
+function otlDisplayParams()
+{
+	otl_RequestThroughXmlhttp("/getApplicationParams?AppId="+$("application").value,"otl_FillParamDetails(otlResponse)");
+	otl_RequestThroughXmlhttp("/getmappedGroupList?AppId="+$("application").value,"Otl_FormGroupDetails(otlResponse)");
+}
+function showSuccessPopup(msg,cb)
+{
+	if($('popupDullScreen')) document.body.removeChild($('popupDullScreen'));
+	if($('popupMessageArea')) document.body.removeChild($('popupMessageArea'));
+	var dullScreen = otlCreateElement("div").setAttribute('class','dullScreenStyle').setAttribute('id','popupDullScreen').appendTo(document.body);
+	//dullScreen.style.zIndex = 19;
+	dullScreen.style.cssText += "display:block;z-index:450;";
+	var popup = otlCreateElement("div").setAttribute('id','popupMessageArea').appendTo(document.body);
+	var close = otlCreateElement("span").setAttribute('id','closeBtn').setAttribute('class','closePopup').appendTo(popup);
+	var respMsg = otlCreateElement("div").setAttribute('class','popupText').setAttribute('id','adminPopText').style('top:50px;').appendTo(popup);
+	close.innerHTML = "&#x274c;";
+    $('adminPopText').innerHTML=msg;
+	close.onclick = function(ev)
+	{
+		document.body.removeChild(popup);
+		document.body.removeChild(dullScreen);
+		if(cb) cb();
+		//window.location.href = "5000.html?application="+$('appname').value+"";
+	}
+}
+/************************************************* THIRD FACTOR **********************************************************/
+function showThirdFactorPopup()
+{
+	$("thirdFactorLogin").innerHTML="";
+	$("thirdFactorTransaction").innerHTML="";
+	$("thirdFactorFormDiv").reset();
+	showElems(['thirdFactorPopupDiv','thirdFactorFormDiv','appPopupOverlay'],'block');
+	$('thirdFactorPopupDiv').children[0].children[0].onclick=function()
+	{
+		hideElems(['thirdFactorPopupDiv','appPopupOverlay']);
+		$("thirdFactorFormDiv").reset();
+	}
+	$('thirdFactorUsername').value=userDetails.username;
+	if(userDetails.authfactors.length >= 0)
+	{
+		otlCreateElement('span').setAttribute('class','thirdFactorLabel').addContent('innerHTML','Login').appendTo($("thirdFactorLogin"));
+		
+		for(i=0;i<userDetails.authfactors.length;i++)
+		{
+			if(userDetails.authfactors[i]=="Device OTP")
+			{
+				var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').appendTo($("thirdFactorLogin"));
+				otlCreateElement('input').setAttribute('type','checkbox').setAttribute('id','thirdFactorLogin_'+userDetails.authfactors[i]).setAttribute('onchange','thirdFactorLoginOnChange(this)').appendTo(label);
+				otlCreateElement('label').addContent('innerHTML',insertSpace(userDetails.authfactors[i])).appendTo(label);
+				var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').setAttribute('id','thirdFactorLoginSelectBox').appendTo($("thirdFactorLogin"));
+				var selectBox=otlCreateElement('select').setAttribute('id','thirdFactorLoginSelectBoxValue_'+userDetails.authfactors[i]).style('width:90%;').appendTo(label);
+				<!-- otlCreateElement('option').setAttribute('value','none').addContent('innerHTML','none').appendTo(selectBox); -->
+				otlCreateElement('option').setAttribute('value','plainOTP').addContent('innerHTML','plainOTP').appendTo(selectBox);
+				otlCreateElement('option').setAttribute('value','challengeOTP').addContent('innerHTML','challengeOTP').appendTo(selectBox);
+				otlCreateElement('option').setAttribute('value','e-signature').addContent('innerHTML','e-signature').appendTo(selectBox);
+				thirdFactorLoginOnChange($('thirdFactorLogin_Device OTP'));
+				<!-- if(userDetails.otplogintype!=null) -->
+					//selectBox.value="challengeOTP";
+			}
+			else
+			{
+				if(i==0) // To display the validation error message
+					var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').setAttribute('id','thirdFactorFormValue_login').appendTo($("thirdFactorLogin"));
+				else
+					var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').appendTo($("thirdFactorLogin"));
+					otlCreateElement('input').setAttribute('type','checkbox').setAttribute('id','thirdFactorLogin_'+userDetails.authfactors[i]).appendTo(label);
+					otlCreateElement('label').addContent('innerHTML',insertSpace(userDetails.authfactors[i])).appendTo(label);
+				//console.log(userDetails.loginauthtype.indexOf(userDetails.authfactors[i]));
+				<!-- if((userDetails.loginauthtype).indexOf(userDetails.authfactors[i])!=-1) -->
+					<!-- $('thirdFactorLogin_'+userDetails.authfactors[i]).setAttribute('checked',true); -->
+			}
+			<!-- var widthValue=42+i; -->
+			<!-- $("thirdFactorPopupDiv").style.cssText+='width:'+widthValue+'%'; -->
+		}
+		if(userDetails.loginauthtype!=null)
+		{
+			for(var i=0;i<(userDetails.loginauthtype).length;i++)
+			{
+				if(userDetails.loginauthtype[i]=="cert")
+				{
+					$("thirdFactorLogin_Certificate").setAttribute('checked',true);
+					if(userDetails.loginauthtype.length == 1)
+						$('thirdFactorLogin_Certificate').disabled = true;
+					
+				}
+				if(userDetails.loginauthtype[i]=="mobileOTP")
+				{
+					$("thirdFactorLogin_Mobile OTP").setAttribute('checked',true);
+					if(userDetails.loginauthtype.length == 1)
+						$('thirdFactorLogin_Mobile OTP').disabled = true;
+				}
+				if(userDetails.loginauthtype[i]=="smsOTP")
+				{
+					$("thirdFactorLogin_SMS OTP").setAttribute('checked',true);
+					if(userDetails.loginauthtype.length == 1)
+						$('thirdFactorLogin_SMS OTP').disabled = true;
+				}
+				<!-- if(userDetails.loginauthtype[i]=="xorkee") -->
+				<!-- { -->
+					<!-- $("thirdFactorLogin_xorkee").setAttribute('checked',true); -->
+					<!-- if(userDetails.loginauthtype.length == 1) -->
+						<!-- $('thirdFactorLogin_xorkee').disabled = true; -->
+				<!-- } -->
+			}
+		}	
+		otlCreateElement('span').setAttribute('class','thirdFactorLabel').addContent('innerHTML','Transaction').appendTo($("thirdFactorTransaction"));
+		for(i=0;i<userDetails.authfactors.length;i++)
+		{
+			if(userDetails.authfactors[i]=="Device OTP")
+			{
+				var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').appendTo($("thirdFactorTransaction"));
+				otlCreateElement('input').setAttribute('type','checkbox').setAttribute('id','thirdFactorTransaction_'+userDetails.authfactors[i]).setAttribute('onchange','thirdFactorTransactionOnChange(this)').appendTo(label);
+				otlCreateElement('label').addContent('innerHTML',insertSpace(userDetails.authfactors[i])).appendTo(label);
+				var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').setAttribute('id','thirdFactorTransactionSelectBox').appendTo($("thirdFactorTransaction"));
+				var selectBox=otlCreateElement('select').setAttribute('id','thirdFactorTransactionSelectBoxValue_'+userDetails.authfactors[i]).style('width:90%;').appendTo(label);
+				<!-- otlCreateElement('option').setAttribute('value','none').addContent('innerHTML','none').appendTo(selectBox); -->
+				otlCreateElement('option').setAttribute('value','plainOTP').addContent('innerHTML','plainOTP').appendTo(selectBox);
+				otlCreateElement('option').setAttribute('value','challengeOTP').addContent('innerHTML','challengeOTP').appendTo(selectBox);
+				otlCreateElement('option').setAttribute('value','e-signature').addContent('innerHTML','e-signature').appendTo(selectBox);
+				thirdFactorTransactionOnChange($('thirdFactorTransaction_Device OTP'));
+				<!-- if(userDetails.otptranstype!=null) -->
+					<!-- selectBox.value=userDetails.otptranstype; -->
+			}
+			else
+			{
+				if(i==0) // To display the validation error message
+					var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').setAttribute('id','thirdFactorFormValue_transaction').appendTo($("thirdFactorTransaction"));
+				else
+				var label=otlCreateElement('div').setAttribute('class','thirdFactorFormValue').appendTo($("thirdFactorTransaction"));
+				otlCreateElement('input').setAttribute('type','checkbox').setAttribute('id','thirdFactorTransaction_'+userDetails.authfactors[i]).appendTo(label);
+				otlCreateElement('label').addContent('innerHTML',insertSpace(userDetails.authfactors[i])).appendTo(label);
+				<!-- if((userDetails.loginauthtype).indexOf(userDetails.authfactors[i])!=-1) -->
+					<!-- $('thirdFactorTransaction_'+userDetails.authfactors[i]).setAttribute('checked',true); -->
+			}
+		}
+		if(userDetails.transauthtype!=null)
+		{
+			for(var i=0;i<(userDetails.transauthtype).length;i++)
+			{
+				if(userDetails.transauthtype[i]=="cert")
+				{
+					$("thirdFactorTransaction_Certificate").setAttribute('checked',true);
+				}
+				if(userDetails.transauthtype[i]=="mobileOTP")
+				{
+					$("thirdFactorTransaction_Mobile OTP").setAttribute('checked',true);
+				}
+				if(userDetails.transauthtype[i]=="smsOTP")
+				{
+					$("thirdFactorTransaction_SMS OTP").setAttribute('checked',true);
+				}
+				<!-- if(userDetails.transauthtype[i]=="xorkee") -->
+				<!-- { -->
+					<!-- $("thirdFactorTransaction_xorkee").setAttribute('checked',true); -->
+				<!-- } -->
+			}
+		}	
+		if(userDetails.loginauthfactors!=null)
+		{
+			if((userDetails.loginauthfactors).indexOf("2fa")!=-1)
+				$("enableForLogin_twoFactor").checked=true;
+			if((userDetails.loginauthfactors).indexOf("3fa")!=-1)	
+				$("enableForLogin_threeFactor").checked=true;
+		}
+		if(userDetails.transauthfactors!=null)
+		{
+			if((userDetails.transauthfactors).indexOf("no_auth")!=-1)
+				$("enableForTransaction_no").checked=true;
+			if((userDetails.transauthfactors).indexOf("2fa")!=-1)	
+				$("enableForTransaction_two").checked=true;	
+			if((userDetails.transauthfactors).indexOf("3fa")!=-1)
+				$("enableForTransaction_three").checked=true;
+		}		
+		if(userDetails.authfactors.length == 1 && userDetails.loginauthtype.length == 1) //If the length of both authfactors & loginAuthType is 1, then that authfactor should be made disabled - 31JULY2024
+		{
+			for(i=0;i<userDetails.authfactors.length;i++)
+			{
+				$('thirdFactorLogin_'+userDetails.authfactors[i]).disabled =true;
+			}
+		}
+		if(userDetails.authfactors.length>=1)
+		{
+			showElems(['enableForLogin','enableForTransaction'],'block');
+		}
+		if(userDetails.authfactors.length==1)
+		{
+			hideElems(['loginThreeFactorRadioBtn','transactionThreeFactorRadioBtn']);
+			<!-- var elem=$("thirdFactorFormValue_transaction").childNodes[0]; -->
+			<!-- elem.disabled="true"; -->
+		}
+		if(userDetails.loginauthtype!=null)
+		{
+			for(var i=0;i<userDetails.loginauthtype.length;i++)
+			{
+				if(userDetails.loginauthtype[i]=="plainOTP" || userDetails.loginauthtype[i]=="challengeOTP" || userDetails.loginauthtype[i]=="e-signature")
+				{
+					$("thirdFactorLoginSelectBoxValue_Device OTP").value=userDetails.loginauthtype[i];
+					$('thirdFactorLogin_Device OTP').checked=true;
+					thirdFactorLoginOnChange($('thirdFactorLogin_Device OTP'));
+				}
+			}
+		}	
+		if(userDetails.transauthtype!=null)
+		{
+			for(var i=0;i<userDetails.transauthtype.length;i++)
+			{
+				if(userDetails.transauthtype[i]=="plainOTP" || userDetails.transauthtype[i]=="challengeOTP" || userDetails.transauthtype[i]=="e-signature")
+				{
+					$("thirdFactorTransactionSelectBoxValue_Device OTP").value=userDetails.transauthtype[i];
+					$('thirdFactorTransaction_Device OTP').checked=true;
+					thirdFactorTransactionOnChange($('thirdFactorTransaction_Device OTP'));
+				}
+			}
+			
+		}	
+	}
+	
+}
+function thirdFactorLoginOnChange(elem)
+{
+	if(elem.checked==true)
+	{
+		$("thirdFactorLoginSelectBox").style.display="inline-block";
+	}
+	else
+	{
+		$("thirdFactorLoginSelectBox").style.display="none";
+	}
+}
+function thirdFactorTransactionOnChange(elem)
+{
+	if(elem.checked==true)
+	{
+		$("thirdFactorTransactionSelectBox").style.display="inline-block";
+	}
+	else
+	{
+		$("thirdFactorTransactionSelectBox").style.display="none";
+	}
+}
+function thirdFactorSubmit()
+{
+	var reqObj = {};
+	reqObj.request = "enabletfa";
+	reqObj.application = application;
+	reqObj.userid1 = $('userid1').value.toUpperCase(); // ANJALI - 02.07.2025
+	reqObj.userid2 = $('userid2').value.toUpperCase(); // ANJALI - 02.07.2025
+	var loginAuthTypeArr=[],transAuthTypeArr=[];
+	for(i=0;i<userDetails.authfactors.length;i++)
+	{
+		if($('thirdFactorLogin_'+userDetails.authfactors[i]).checked ==true)
+		{
+			if(userDetails.authfactors[i]=="Certificate")
+			{
+				loginAuthTypeArr.push("cert");	
+			}
+			else if(userDetails.authfactors[i]=="Mobile OTP")
+			{
+				loginAuthTypeArr.push("mobileOTP");	
+			}
+			else if(userDetails.authfactors[i]=="SMS OTP")
+			{
+				loginAuthTypeArr.push("smsOTP");	
+			}
+			<!-- else if(userDetails.authfactors[i]=="xorkee") -->
+			<!-- { -->
+				<!-- loginAuthTypeArr.push("xorkee");	 -->
+			<!-- } -->
+		}
+		if(userDetails.authfactors[i]=="Device OTP")
+		{
+			if($('thirdFactorLogin_'+userDetails.authfactors[i]).checked==true)
+			loginAuthTypeArr.push($('thirdFactorLoginSelectBoxValue_'+userDetails.authfactors[i]).value);
+		}
+	}
+	reqObj.loginauthtype=loginAuthTypeArr;
+	for(i=0;i<userDetails.authfactors.length;i++)
+	{
+		if($('thirdFactorTransaction_'+userDetails.authfactors[i]).checked == true)
+		{
+			if(userDetails.authfactors[i]=="Certificate")
+			{
+				transAuthTypeArr.push("cert");	
+			}
+			else if(userDetails.authfactors[i]=="Mobile OTP")
+			{
+				transAuthTypeArr.push("mobileOTP");	
+			}
+			else if(userDetails.authfactors[i]=="SMS OTP")
+			{
+				transAuthTypeArr.push("smsOTP");	
+			}
+			<!-- else if(userDetails.authfactors[i]=="xorkee") -->
+			<!-- { -->
+				<!-- transAuthTypeArr.push("xorkee");	 -->
+			<!-- } -->
+		}	
+		if(userDetails.authfactors[i]=="Device OTP")
+		{
+			if($('thirdFactorTransaction_'+userDetails.authfactors[i]).checked==true)
+			transAuthTypeArr.push($('thirdFactorTransactionSelectBoxValue_'+userDetails.authfactors[i]).value);
+		}
+	}
+	reqObj.transauthtype=transAuthTypeArr;
+	if(userDetails.authfactors.length>=2)
+	{
+		if(loginAuthTypeArr.length==0)
+		{
+			showXorkeeError({field:$('thirdFactorFormValue_login'),text:'Please select any one login authentication factor.',flag:true});
+			return false;
+		}
+		if($("enableForTransaction_two").checked==true||$("enableForTransaction_three").checked==true)
+		{
+			if(transAuthTypeArr.length==0)
+			{
+				showXorkeeError({field:$('thirdFactorFormValue_transaction'),text:'Please select any one transaction authentication factor.',flag:true});
+				return false;
+			}
+		}
+		if($("enableForLogin_threeFactor").checked==true)
+		{
+			if(loginAuthTypeArr.length<2)
+			{
+				showError({'field':$('thirdFactorFormValue_login'),'text':'Please select any two login authentication factors.'});
+				return false;
+			}
+		}
+		if($("enableForTransaction_three").checked==true)
+		{
+			if(transAuthTypeArr.length<2)
+			{
+				showError({'field':$('thirdFactorFormValue_transaction'),'text':'Please select any two transaction authentication factors.'});
+				return false;
+			}
+		}
+		var enableForLogin = ($('enableForLogin_twoFactor').checked)?"2fa":"3fa"; 
+		reqObj.loginauthfactors=enableForLogin;
+		var enableForTransaction = ($('enableForTransaction_no').checked)?"no_auth":($('enableForTransaction_two').checked)?"2fa":"3fa"; 
+		reqObj.transauthfactors=enableForTransaction;
+	}
+	if(userDetails.authfactors.length==1)
+	{
+		if($("enableForTransaction_two").checked==true)
+		{
+			if($("thirdFactorTransaction_"+userDetails.authfactors[0]).checked==false)
+			{
+				showError({'field':$("thirdFactorTransaction_"+userDetails.authfactors[0]),'text':'Please select transaction authentication factors.'});
+				return false;
+			}
+		}
+		if($("enableForTransaction_no").checked==true)
+		{
+			reqObj.transauthtype=[];
+		}
+		var enableForLogin = ($('enableForLogin_twoFactor').checked)?"2fa":"3fa"; 
+		reqObj.loginauthfactors=enableForLogin;
+		var enableForTransaction = ($('enableForTransaction_no').checked)?"no_auth":($('enableForTransaction_two').checked)?"2fa":"3fa"; 
+		reqObj.transauthfactors=enableForTransaction;
+	}
+	var str="Third factor submitted successfully";
+	var reqName=reqObj.request;
+	var reqName = reqObj.request;
+	var requestObj = {requestBody:reqObj};
+	requestObj.requestBody = JSON.stringify(requestObj.requestBody);
+	submitfinal(requestObj,"/",str,reqName,function(resp)
+	{
+		if(resp.success)
+		{
+			hideElems(['thirdFactorPopupDiv','appPopupOverlay']);
+			$('thirdFactorFormDiv').reset();
+			showSuccessPopup('Third factor submitted successfully');
+			getAppList(function()
+			{
+				populateAppGroups();
+				getappparams();
+				populateUserDetails();
+				getAppAuthFactors();
+				addClientIpObj = new addClientIp();
+				trustedIpOnChange();
+			});
+		}
+		else 
+		{
+			showPopup(resp.errorString);
+			hideElems(['thirdFactorPopupDiv','appPopupOverlay']);
+		}
+	});
+}
+function enableDisableThirdFactor(flag)
+{
+	var reqObj = {};
+	reqObj.username = userDetails.username;
+	reqObj.application = $('appname').value;
+	reqObj.emailid = userDetails.emailid;
+	reqObj.mobileno = userDetails.mobileno;
+	reqObj.userid1 = $('userid1').value.toUpperCase(); // ANJALI - 02.07.2025
+	reqObj.userid2 = $('userid2').value.toUpperCase(); // ANJALI - 02.07.2025
+	reqObj.attribute1 = userDetails.attribute1;
+	reqObj.attribute2 = userDetails.attribute2;
+	reqObj.attribute3 = userDetails.attribute3;
+	reqObj.attribute4 = userDetails.attribute4;
+	reqObj.groupinfo = userDetails.groupinfo;
+	reqObj.trustedipflag = userDetails.trustedipflag;
+	reqObj.trustediplist = userDetails.trustediplist;
+	var tmpFlagForLogin = "",tmpFlagForTrans = "";
+	reqObj.request = 'addmobileotpuser';
+	if($("otp_enabledForLogin").checked) reqObj.tfaloginlist = ['cert','mobileotp'];
+	if($("otp_enabledForTransaction").checked) reqObj.tfatrnlist = ['cert','mobileotp']
+	var checkBoxElems= document.getElementsByName('otp_enabled');
+	for(var i=0;i<checkBoxElems.length;i++)
+	{
+		if(!checkBoxElems[0].checked && !checkBoxElems[1].checked)
+		{
+			showError({'field':$('otp_enabledDiv'),'text':'Please check login or transaction'});
+			return false;
+		}
+	}
+	if($("otp_enabledForLogin").checked)
+	{
+		//tmpFlagForLogin = ($("otp_loginAuthTypePlain").checked?'plainOTP':($("otp_loginAuthTypeChallenge").checked?'challengeOTP':'esign'));
+		//reqObj.logintfaenabled  = true;
+		reqObj.tfaloginlist = ['cert',tmpFlagForLogin];
+	}
+	if($("otp_enabledForTransaction").checked)
+	{
+		tmpFlagForTrans = ($("otp_transAuthTypePlain").checked?'plainOTP':($("otp_transAuthTypeChallenge").checked?'challengeOTP':'esign'));
+		reqObj.transtfaenabled  = true;
+		reqObj.tfatrnlist = ['cert',tmpFlagForTrans]
+	}
+	
+	sendTfaReq(reqObj);
+	function sendTfaReq(reqObj)
+	{
+		sendXmlRequest(JSON.stringify(reqObj),function(resp)
+		{
+			if(resp.success)
+			{
+				hideElems(['thirdFactorPopupDiv']);
+				$('otpFactorDiv').reset();
+				showSuccessPopup('Third factor enabled successfully');
+			}
+			else showPopup(resp.errorString);
+			
+		});
+	}
+}
+function populateThirdFactorDetails()
+{
+	displayAuthInfo('',true);
+}
+/************************************************* THIRD FACTOR **********************************************************/
+</script>
+</html>

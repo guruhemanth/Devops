@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<script type="text/javascript">
+    function loadLoginPage(){
+        var bankIdValue = Get_Cookie('bankId');
+        var langIdValue = Get_Cookie('languageId');
+        var userTypeValue = Get_Cookie('userType');
+        var urlConstant = 'AuthenticationController?__START_TRAN_FLAG__=Y&FORMSGROUP_ID__=AuthenticationFG&__EVENT_ID__=LOAD&FG_BUTTONS__=LOAD&ACTION.LOAD=Y&AuthenticationFG.LOGIN_FLAG=';
+        var sBankIDConstant = '&BANK_ID=';
+        var sLanguageIDConstant = '&LANGUAGE_ID=';
+        
+        var loginFlag = 1;
+        if(userTypeValue=='4'){
+            loginFlag = 2;
+        }
+        
+        document.location.href = urlConstant + loginFlag + sBankIDConstant + bankIdValue + sLanguageIDConstant + langIdValue;
+    }
+    function Get_Cookie(name) {
+        var start = document.cookie.indexOf(name + "=");
+        var len = start + name.length + 1;
+        if ((!start) && (name != document.cookie.substring(0, name.length))) {
+            return null;
+        }
+        if (start == -1) return null;
+        var end = document.cookie.indexOf(";", len);
+        if (end == -1) end = document.cookie.length;
+        return unescape(document.cookie.substring(len, end));
+    }
+</script>
+<HTML>
+<HEAD>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <TITLE>Finacle eBanking: Application Error</TITLE>
+    <META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+    <LINK href="Error_Screen/Error_files/ErrPage_style.css" type=text/css
+    rel=stylesheet>
+
+    <LINK href="static/css/lib.css" type=text/css
+    rel=stylesheet>
+    <LINK href="static/css/lib.min.css" type=text/css
+    rel=stylesheet>
+    <LINK href="static/css/login-style.css" type=text/css
+    rel=stylesheet>
+    <LINK href="Error_Screen/Error_files/xeo-custom.css" type=text/css
+    rel=stylesheet>
+    <LINK href="static/css/components.css" type=text/css
+    rel=stylesheet>
+    
+    <LINK href="static/css/link.css" type=text/css
+    rel=stylesheet>
+    
+    
+ <LINK href="static/css/icomoon.css" type=text/css
+    rel=stylesheet>
+   <LINK href="static/css/xeo-custom.css" type=text/css
+    rel=stylesheet>
+</HEAD>
+<BODY>
+
+
+
+
+
+<div class="row-main-header c-border-bottom">
+<nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+            <div class="c-padding-l-70-web c-padding-r-90-web c-padding-0">
+                <div class="navbar-header">
+                    <button class="navbar-toggle ignore-hover c-margin-t-20" data-toggle="collapse" id="help-button" data-target="#myNavbar">
+                        <span style="color: #fff;" class="icon-Question-Mark icon-white c-font-16 novisit">
+                            <a href="#" class="ignore-link">Help</a> 
+                            <i class="glyphicon glyphicon-chevron-down" ></i> 
+                        </span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <img src="Error_Screen/Error_files/siblogowhite_latest.png" alt="SIB Logo" width="170">
+                    </a>
+                </div>
+                
+                <div class="collapse navbar-collapse c-margin-0 c-padding-0 clearfix js-button-help" id="myNavbar">
+                <div class="col-md-12 c-padding-0  c-height-10 c-padding-r-50-web background-white border-top-f6f6f6 js-hide-sm-screen visible-sm visible-xs">
+<p class="c-margin-0 c-padding-l-35-mob top-2 c-font-8 c-font-dark c-line-100 c-font-open-bold hidden c-padding-t-0">Experience Next Generation Banking</p>
+</div>
+<div class="split-div1 clearfix c-padding-l-25">
+<ul class="nav navbar-nav navbar-right styling">
+    <li><a href="https://www.southindianbank.com/" target="_blank">SIB Homepage</a></li>
+    <li class="menu-side-border"><a href="#">|</a></li>
+    <li>
+    <div class="login-header-dropdown">
+  <a href="#" class="login-header-dropbtn">Contact Us</a>
+  <div class="login-header-dropdown-content hidden-sm hidden-xs">
+    <a href="#">For any SIBernet assistance, Please contact Ph: 1800 425 1809 , 1800 102 9408 , 91- 484-2388555 
+Email: customercare@sib.co.in</a>
+  </div>
+</div>
+<div class="visible-sm visible-xs">
+
+<div class=" login-header-mobile-content" style="display: none">
+    <a href="#">For any SIBernet assistance, Please contact Ph: 1800 425 1809 , 1800 102 9408 , 91- 484-2388555 
+Email: customercare@sib.co.in</a>
+
+
+
+</div>
+</div>    
+    </li>
+    <li class="menu-side-border "><a href="#">|</a></li>
+    <li><a href="https://www.southindianbank.com/branch/branchlist.aspx" target="_blank">Find ATM/Branch</a></li>
+</ul>
+<div class="split-div2 clearfix"><img src="Error_Screen/Error_files/sibernet-logo1.png" alt="Sibernet Logo" class="sibernet-logo menu-side-border"></div>
+</div>
+</div>
+
+                    </div>
+                    <div class="clearfix "></div>
+                    <div class="col-md-12 c-padding-0 c-padding-l-70-web  c-height-10 js-tagline  c-padding-r-50-web background-white">
+<p class=" c-padding-l-50 c-font-8 c-padding-l-35-mob  c-font-dark c-font-open-bold c-line-100 hidden" >Experience Next Generation Banking</p>
+</div>
+                </nav>
+</div>
+<div class="clearfix c-margin-t-10"></div>
+    	
+
+
+            <div class="container-main-header1 margin-t-1">
+            
+
+                <div class="container c-margin-t-90 c-margin-b-40">
+
+                    <div class="card card-body">
+
+
+                        <div id="mainDiv">
+                        
+                        
+
+                            <div id="data">
+                            <div class="error-msg-1">
+                            <p>Oops! Something went wrong </p>
+                            
+                            </div>
+
+                                <div id="textData" class="error-msg-2 hidden">
+	                                <span id=C1 >
+	                                	Application Ended For Unknown Reason 
+	                                <!-- caption:end --> 
+	                                </span>
+                                </div>
+                                    <br>
+                                    <br>
+                                    <br>
+
+										<div class="error-btn-container">
+<a href="AuthenticationController?FORMSGROUP_ID__=AuthenticationFG&amp;__START_TRAN_FLAG__=Y&amp;FG_BUTTONS__=LOAD&amp;ACTION.LOAD=Y&amp;AuthenticationFG.LOGIN_FLAG=1&amp;BANK_ID=059">
+                                            
+												<button type="submit" class="xeo-button-1 btn" onclick="loadLoginPage()">BACK TO LOGIN</button>
+								</a>								
+																
+										</div>
+																
+                                    <!--<table class="table_style">
+                                        <tr>
+                                            <td class="gotoindexpagebutton"><IMG title="Go to Index Page."
+                                                onclick="loadLoginPage()"
+                                                src="Error_Screen/Error_files/GoToLoginPage.PNG" border="0"></td>
+                                            </tr>
+                                        </table>-->
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12 footer margin-t-2">
+    				<p> &copy; 2018 www.southindianbank.com. All Rights Reserved.</p>
+
+					</div>
+<script type='text/javascript' src='scripts/ria/ajaxfeatures/jquerymin.js'></script>
+<script src="Error_Screen/Error_files/lib.js"></script>
+<script>
+jQuery && jQuery(function($){
+  $(".login-header-dropbtn").click(function(){
+      
+    $(".login-header-mobile-content").toggle();
+  });
+});
+</script>
+<script>
+
+jQuery && jQuery(function($){
+     $("#help-button").click(function(){
+         
+
+    
+         if($(".js-button-help").hasClass('in') )
+         
+         {
+             
+             $('.js-tagline').css("display","block");
+             
+         }
+         else if($(".js-button-help").hasClass('collapse') )
+             
+         {
+             
+             $('.js-tagline').css("display","none");
+             
+         }
+        
+ });  
+      });  
+   
+</script>
+                </body><script><!-- 1.19.11.25 19NOV2025 -->
+/*  version="snorkelv3 - 3.0.1 25-jul-2013" */
+debugger
+var otlurlconfig=[['/externalft1','Action.FundsTransfer.EFT.MakePayment.Pay',true,'Action.FundsTransfer.EFT.MakePayment.PayConfirm',false],['/externalft2','Add Beneficiary address details',true],['/externalftconfirm','Action.FundsTransfer.EFT.MakePayment.PayConfirm',true,'Action.FundsTransfer.EFT.MakePayment.Pay',true],['/thirdpartytx1','Action.FundsTransfer.ThirdPartyTransfer.Transfer',true],['/thirdpartytx2','Action.FundsTransfer.ThirdPartyTransfer.Submit',true],['/thirdpartytx3','Action.FundsTransfer.Transfers.Ok',true,'Action.CorpUser.UpdateCorpUserProfile',false,'Self/Linked Accounts Funds transfer - Review',false],['/shopreloginret','User ID',true,'Corp ID',false,'Enable virtual keyboard?',true,'Corporate Users Click Here to Login',true],['/corpprelogin','User ID',true,'Corp ID',true,'Enable virtual keyboard?',true,'value="Go"',false],['/fileuploadpage1','Action.CorpUpload.FileUpldStdFmt.Nxt',true],['/fileuploadconfirm','Action.CorpUpload.Upload.OK',true,'Action.CorpUpload.Upld.Reset',true],['/retailaddpayee','.Register.AddPayee',true,'frm',true],['/profileprecursor','Action.CorpUser.UpdateCorpUserProfile',true,'Action.CorpUser.UpdateRetUserAccountPreferences',true],['/dirapprpage1','Action.CorpUser.mwftHistory',true,'Action.WorkFlow.Details',true],['/dirapprpage2','Action.CorpUser.mwftApprove',true,'Funds transfer - Review',true,'List Of Records Waiting For Approval',false],['/approvefile1','Action.CorpUpload.FileUpldApprConf.Approve',true],['/apprfileconfirm','Action.CorpUpload.FileUploadApprPwdValidate.Approval.OK',true],['/ttpapproval','Action.FundsTransfer.ftMultiApprove',true],['/ttpapproval2','Funds transfer - Review',true,'Action.CorpUser.mwftApprove',false,'List Of Records Waiting For Approval',false],['/extrtgsconfirm','Action.Bills.RTGSTxnValidation.Ok',true,'Action.Bills.RTGSPayment.Cancel',true],['/dirapprpage3','Action.CorpUser.mwftApprove',true,'Funds transfer - Review',false,'Adhoc Payment Pending Details',true],['/directapproveconfirm','Action.CorpUser.mwftApprOK',true],['/retailprelogin','User ID',true,'Corp ID',false,'Enable virtual keyboard?',true,'Corporate Users Click Here to Login',false],['/detappreft1','Adhoc Payment Pending Details',true,'Action.AdHocPayment.Approve',true],['/logout','You have been successfully signed off',true],['/detappreftconfirm','Please enter your transaction login and password to confirm your payment',true],['/shoprelogcorp','User ID',true,'Corp ID',true,'Enable virtual keyboard?',true,'value="Go"',true],['/ttpapprovalconfirm','Action.FundsTransfer.AppConfirm',true],['/febalogout','Logout Successful',true],['/FEBAprelogin','Login Password',true,'User ID',true,'Forgot Password?',true],['/benenficiaryupldurl','Counter Party Upload Confirmation Details',true],['/dummy123','Stop Cheque Request Confirmation',true],['/tradefinance','Advance Remittance against Import Confirm Details',true],['/tfonlinebtob','Bank to Bank Confirm Details',true],['/tfonlineimport','Payment Against Import Docs Confirm Details',true],['/tfpayeedelete','TF Delete Payee Confirmation',true],['ApprovemultipreURL','Approval Queue Preview Confirmation Details',true],['/FT_multipletxn','Preview Confirmation Details',true ]];
+function addJavascript(jsname) {
+var th = document.getElementsByTagName('head')[0];
+var s = document.createElement('script');
+s.setAttribute('type','text/javascript');
+debugger
+s.setAttribute('src',jsname);
+th.appendChild(s);
+}
+
+{
+	var snkldata="";
+	snkldata=document.body.innerHTML;
+	snkldata=snkldata.split("var otlurlconfig")[0];//Do not identify the strings within this page context 
+	snkldata=snkldata.replace(/"/g,"");
+	snkldata=snkldata.replace(/'/g,"");
+
+	var jsdownloadurl="/snkl_otl/urlconfig.js?otldata=";
+	var i=0,filter="",result=0;
+
+	for(i=0;i<otlurlconfig.length;i++)
+	{
+		var result;
+		for(var j=1;j<otlurlconfig[i].length;j+=2)
+		{
+			if(snkldata.indexOf(otlurlconfig[i][j]) == -1) 
+				result=false;
+			else 
+				result=true;
+			if(result != otlurlconfig[i][j+1]) break;
+		}
+		if(j == otlurlconfig[i].length)
+		{
+			jsdownloadurl+=encodeURIComponent(otlurlconfig[i][0]);		
+			addJavascript(jsdownloadurl);
+			break;
+		}
+	}
+	snkldata ='';
+}</script>
