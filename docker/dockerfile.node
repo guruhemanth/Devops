@@ -1,0 +1,14 @@
+# Use an official, lightweight Node.js runtime
+FROM node:18-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the server script into the container
+COPY ./Project5/Project5/server.js .
+
+# Expose port 8888 for the main Flask application
+EXPOSE 8888
+
+# Command to run the server, passing 8888 as the required port argument
+CMD ["node", "server.js", "8888"]

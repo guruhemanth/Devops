@@ -1,0 +1,26 @@
+# Use an official, lightweight Python runtime as a parent image
+FROM python:3.10-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of your application code
+# This will include your Python script, and the /html and /scripts folders
+COPY ./Project5/Project5/ /app
+
+# Ensure the upload directory exists, as defined in your script
+RUN mkdir -p uploads
+
+# Expose the port your Flask app runs on (8090)
+EXPOSE 8090
+
+# Force Python to print logs immediately instead of buffering
+ENV PYTHONUNBUFFERED=1
+
+# Command to run the application when the container starts
+# Replace 'app.py' if your main script is named differently
+CMD ["python", "server_xorkeesign.py"]

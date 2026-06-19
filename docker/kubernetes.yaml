@@ -1,0 +1,72 @@
+---
+# 1. NODE.JS SIGNING SERVER DEPLOYMENT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signing-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: signing-server
+  template:
+    metadata:
+      labels:
+        app: signing-server
+    spec:
+      containers:
+        - name: signing-server
+          image: guruhemanth/signing-server:latest 
+          ports:
+            - containerPort: 8888
+
+---
+# 2. NODE.JS SIGNING SERVER SERVICE (Internal Networking)
+apiVersion: v1
+kind: Service
+metadata:
+  name: signing-service # Flask uses this exact name to find the Node server
+spec:
+  selector:
+    app: signing-server
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+
+---
+# 3. PYTHON FLASK API DEPLOYMENT
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-2faservice-deployment
+spec:
+  replicas: 2 # Runs 2 instances of your API to handle more traffic
+  selector:
+    matchLabels:
+      app: python-2faservice
+  template:
+    metadata:
+      labels:
+        app: python-2faservice
+    spec:
+      containers:
+        - name: python-2faservice
+          image: guruhemanth/python_2faserver:v1 
+          ports:
+            - containerPort: 8090
+
+---
+# 4. PYTHON FLASK API SERVICE (External Access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-2faservice-loadbalancer
+spec:
+  type: LoadBalancer # Exposes your Flask app to the outside world
+  selector:
+    app: python-2faservice
+  ports:
+    - protocol: TCP
+      port: 8090 
+      targetPort: 8090
