@@ -1,7 +1,0 @@
-21-08-2023
- today we have completed the snorkeltx installation:
-1. during installation i have got database errors which happened due to wrong dsn name in the snorkeltxv5.config file
-2.and then i have reconfigured the password and cleared tables and deleted the applicationdb file that was previously copied 
-3.and then re-started the application which was successful and then we have accessed the application through the 9008 default port
-4.and we have applied for the license for the wsnorklet inorder to serve for the application
-5.and we have applied license for the application 
