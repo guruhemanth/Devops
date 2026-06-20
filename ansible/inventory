@@ -1,1 +1,2 @@
-172.30.104.47
+[web_file_server]
+172.30.104.47 http_server=httpd ftp_server=vsftpd
