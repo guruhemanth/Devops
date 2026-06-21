@@ -24,3 +24,11 @@
           - vsftpd 
         state: latest
         update_cache: true
+    - name: copy pages for web server
+      tags: http
+      copy:
+        src: index.html
+        dst: /var/www/html/index.html
+        owner: root
+        groups: root
+        mode: 0644
