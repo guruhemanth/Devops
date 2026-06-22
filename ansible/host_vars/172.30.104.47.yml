@@ -1,0 +1,4 @@
+http_server: httpd
+ftp_server: vsftpd
+ssh_users: "guru simone"
+ssh_template_file: sshd_config.j2
