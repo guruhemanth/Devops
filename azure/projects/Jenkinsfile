@@ -1,0 +1,71 @@
+pipeline {
+    agent any
+
+    environment {
+        // Your specific Azure Container Registry URL
+        ACR_SERVER = 'devopsguruacrtf2wh7e6.azurecr.io'
+        
+        // Tags to version our images
+        TAG = "v${env.BUILD_ID}"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo 'Checking out code from Git...'
+                // Pulls the latest code from your main branch
+                git branch: 'main', url: 'https://github.com/guruhemanth/Devops.git'
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                echo 'Building Flask API and Node.js Server...'
+                
+                // Build Python Flask Image
+                sh "docker build -t ${ACR_SERVER}/python_2faserver:${TAG} -t ${ACR_SERVER}/python_2faserver:latest -f docker/dockerfile.flask ."
+                
+                // Build Node Image
+                sh "docker build -t ${ACR_SERVER}/signing-server:${TAG} -t ${ACR_SERVER}/signing-server:latest -f docker/dockerfile.node ."
+            }
+        }
+
+        stage('Push to Azure Container Registry') {
+            steps {
+                echo 'Pushing images to your private Azure vault...'
+                
+                // Note: In Jenkins, you securely store your ACR Admin password using the Credentials plugin.
+                // withCredentials([usernamePassword(credentialsId: 'acr-credentials', passwordVariable: 'ACR_PASS', usernameVariable: 'ACR_USER')]) {
+                //     sh "docker login ${ACR_SERVER} -u ${ACR_USER} -p ${ACR_PASS}"
+                // }
+                
+                sh "docker push ${ACR_SERVER}/python_2faserver:${TAG}"
+                sh "docker push ${ACR_SERVER}/python_2faserver:latest"
+                sh "docker push ${ACR_SERVER}/signing-server:${TAG}"
+                sh "docker push ${ACR_SERVER}/signing-server:latest"
+            }
+        }
+
+        stage('Deploy to Azure Kubernetes (AKS)') {
+            steps {
+                echo 'Instructing Azure Kubernetes to deploy the new images...'
+                
+                // Note: Jenkins needs `kubectl` installed and access to your cluster credentials to run this.
+                // sh "kubectl apply -f azure/projects/kubernetes.yaml"
+                
+                // To force Kubernetes to pull the brand new images immediately:
+                // sh "kubectl rollout restart deployment/python-2faservice-deployment"
+                // sh "kubectl rollout restart deployment/signing-server-deployment"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ Pipeline completed successfully! Your pods are now running in Azure!'
+        }
+        failure {
+            echo '❌ Pipeline failed. Check the Jenkins console output.'
+        }
+    }
+}
