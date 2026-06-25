@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application code
 # This will include your Python script, and the /html and /scripts folders
-COPY ./Project5/Project5/ /app
+COPY ../python_2fa_API/ /app
 
 # Ensure the upload directory exists, as defined in your script
 RUN mkdir -p uploads
