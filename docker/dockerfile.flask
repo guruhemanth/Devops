@@ -5,12 +5,12 @@ FROM python:3.10-slim
 WORKDIR /app
 
 # Copy the requirements file and install dependencies
-COPY ./requirements.txt .
+COPY docker/requirements.txt /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of your application code
 # This will include your Python script, and the /html and /scripts folders
-COPY ../python_2fa_API/ /app
+COPY python_2fa_API/ /app
 
 # Ensure the upload directory exists, as defined in your script
 RUN mkdir -p uploads
