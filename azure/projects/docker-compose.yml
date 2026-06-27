@@ -9,8 +9,6 @@ services:
     ports:
       - "8080:8080" # Jenkins web interface
       - "50000:50000" # Jenkins agent port
-    environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
     volumes:
       - jenkins_home:/var/jenkins_home
       # Mount Docker socket so Jenkins can build Docker containers

@@ -51,11 +51,11 @@ pipeline {
                 echo 'Instructing Azure Kubernetes to deploy the new images...'
                 
                 // Note: Jenkins needs `kubectl` installed and access to your cluster credentials to run this.
-                // sh "kubectl apply -f azure/projects/kubernetes.yaml"
+                sh "kubectl apply -f azure/projects/kubernetes.yaml"
                 
                 // To force Kubernetes to pull the brand new images immediately:
-                // sh "kubectl rollout restart deployment/python-2faservice-deployment"
-                // sh "kubectl rollout restart deployment/signing-server-deployment"
+                sh "kubectl rollout restart deployment/python-2faservice-deployment"
+                sh "kubectl rollout restart deployment/signing-server-deployment"
             }
         }
     }
