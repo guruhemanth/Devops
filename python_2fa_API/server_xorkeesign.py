@@ -141,7 +141,7 @@ def home_post():
         print(payload)
         sign_headers = {"Content-Type": "application/json"}
 
-        status, signature_response = send_http_request("signing-server", 8888, "/sign", payload, sign_headers)
+        status, signature_response = send_http_request("signing-service", 8888, "/sign", payload, sign_headers)
         print(signature_response)
 
         if "signature" not in signature_response:
