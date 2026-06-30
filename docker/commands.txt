@@ -1,0 +1,11 @@
+docker run --name signing-service --network xorkee-network -p 8888:8888 -d signing-server
+docker run --name xorkee-app --network xorkee-network -p 8090:8090 -d xorkee-api
+docker run --name xorkee-app -p 8090:8090 -p 8888:8888 -d xorkee-unified-server
+docker tag original-xorkee-api your_dockerhub_username/original-xorkee-api:latest
+docker tag xorkee-api guruhemanth/xorkee-api:latest
+ docker push guruhemanth/xorkee-api:latest
+# Build the Flask app
+docker build -f Dockerfile.flask -t xorkee-api .
+
+# Build the Node.js app
+docker build -f Dockerfile.node -t signing-server .

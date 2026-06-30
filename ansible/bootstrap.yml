@@ -1,0 +1,27 @@
+- hosts: all
+  become: true
+  tasks: 
+  
+    - name: update repo
+      package:
+        update_cache: true 
+
+  
+    - name: create a user
+      user:
+        name: simone
+        group: root
+
+    - name: add user a sudo
+      copy:
+        src: sudoer.simone
+        dest: /etc/sudoers.d/simone
+        owner: root
+        group: root
+        mode: 044
+
+    - name: add ssh key to user simone
+      authorized_key:
+        user: simone
+        key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEfBmuHajI9MM7HCITCnfvHo77BFBXV+41diyCICwzYX ansible"
+      

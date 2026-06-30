@@ -1,0 +1,30 @@
+- name: install ftp and http packages
+  tags: tag2
+  package:
+    name:
+      - httpd
+      - vsftpd
+    state: latest
+    update_cache: true
+
+- name: copy pages for web server
+  tags: http
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+
+- name: start http service
+  service:
+    name: httpd
+    state: started
+    enabled: true
+
+- name: install terraform
+  package:
+    name:
+      - terraform
+    update_cache: true
+

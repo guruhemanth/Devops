@@ -1,0 +1,27 @@
+# Azure CLI commands used in past sessions and current conversation:
+
+az
+az login
+az upgrade
+az acr login --name devopsguruacrtf2wh7e6
+az config --help
+az config set -h
+az config set logging.enable_log_file=true logging.log_dir=~/Devops/azure/projects/
+
+# Fetching credentials for various Azure resources:
+
+# 1. Azure Container Registry (ACR)
+az acr credential show --name <registry-name>
+az acr credential show --name devopsguruacrtf2wh7e6
+
+# 2. Azure Storage Account (Access Keys)
+az storage account keys list --resource-group <resource-group-name> --account-name <storage-account-name>
+
+# 3. Azure Kubernetes Service (AKS)
+az aks get-credentials --resource-group <resource-group-name> --name <cluster-name>
+
+# 4. Azure Web Apps (Publishing Profile)
+az webapp deployment list-publishing-profiles --resource-group <resource-group-name> --name <app-name> --xml
+
+# 5. Azure Database (PostgreSQL / MySQL / SQL) - Password Reset
+az postgres server update --resource-group <resource-group-name> --name <server-name> --admin-password <new-password>

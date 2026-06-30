@@ -1,0 +1,22 @@
+- hosts: all
+  become: true
+  pre_tasks: 
+  
+  - name: update repo
+    package:
+      update_cache: true
+
+  - name: create a user
+    user:
+      name: simone
+      group: root
+  
+- hosts: workstation
+  become: true 
+  roles:
+    - workstation
+
+- hosts: web_file_server
+  become: true
+  roles:
+    - web_file_server

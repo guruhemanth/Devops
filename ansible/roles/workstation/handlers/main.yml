@@ -1,0 +1,9 @@
+- name: restart_apache
+  service:
+    name: httpd
+    state: restarted
+
+- name: restart_sshd 
+  service:
+    name: sshd
+    state: restarted
